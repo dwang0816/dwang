@@ -7,7 +7,7 @@ const Project1 = () => {
     <div>
       <section>
         <div className="project-container">
-          <img className="project-picture" src={trees}/>
+          <img className="project-picture" alt="nyc-trees" src={trees}/>
           <h1 className="project-title">NYC Trees</h1>
           <p className="project-description">A data visualization app that display dated trees of New York City.</p>
           <hr className="break"/>

@@ -7,7 +7,7 @@ const Project1 = () => {
     <div>
       <section>
         <div className="project-container">
-          <img className="project-picture" src={stripeify}/>
+          <img className="project-picture" alt="stripefy" src={stripeify}/>
           <h1 className="project-title">Stripeify</h1>
           <p className="project-description">A React.js web app for listening and voting on playlists created by users.</p>
           <hr className="break"/>
