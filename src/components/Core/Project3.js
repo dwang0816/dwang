@@ -8,7 +8,7 @@ const Project3 = () => {
       <section>
         <div className="project-container">
           <img className="project-picture" alt="moodiday" src={moodiday}/>
-          <h1 className="project-title">Moodiday</h1>
+          <h1 className="project-title">Moodi Day</h1>
           <p className="project-description">Find New Ways to Chill Out.</p>
           <hr className="break"/>
           <p className="project-stacks">Next.js, Scss, Netlify.</p>

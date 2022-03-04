@@ -1,3 +1,8 @@
+.project-picture {
+  width: 100%;
+  min-height: 233.67px;
+  object-fit: cover;
+}
 .project-site {
   color: #333;
   background-color: #fff;
@@ -45,11 +50,6 @@
   .project-container {
     margin-bottom: 40px;
   }
-  .project-picture {
-    width: 100%;
-    min-height: 233.67px;
-    object-fit: cover;
-  }
 }
 
 @media (min-width: 768px) {
@@ -96,7 +96,4 @@
 }
 
 @media (min-width: 1280px) {
-  .project-picture {
-    max-width: 500px;
-  }
 }
