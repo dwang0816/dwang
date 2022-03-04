@@ -1,5 +1,7 @@
 .project-picture {
   width: 100%;
+  min-height: 233.67px;
+  object-fit: cover;
 }
 .project-site {
   color: #333;
@@ -45,6 +47,9 @@
   .project-github {
     margin-left: 10px;
   }
+  .project-container {
+    margin-bottom: 0px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -59,6 +64,7 @@
       "picture links";
     margin-top: 80px;
     grid-gap: 0 80px;
+    margin-bottom: 40px;
   }
   .project-title {
     grid-area: title;

@@ -1,5 +1,6 @@
 .project-picture {
   width: 100%;
+  min-height: 233.67px;
 }
 .project-site {
   color: #333;
@@ -44,6 +45,9 @@
   }
   .project-github {
     margin-left: 10px;
+  }
+  .project-container {
+    margin-bottom: 40px;
   }
 }
 
