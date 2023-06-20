@@ -13,7 +13,7 @@ const Project1 = () => {
           <hr className="break"/>
           <p className="project-stacks">React, MapBox, Ruby on Rails, Heroku.</p>
           <div className="project-links">
-          <a href="https://nyc-trees-frontend.herokuapp.com/" className="project-site">Site</a>
+          <a href="https://scintillating-pasca-0fd429.netlify.app/" className="project-site">Site</a>
           <a href="https://github.com/dwang0816/Nyc-Trees-Frontend/blob/master/README.md" className="project-github">Github</a>
           </div>
         </div>
