@@ -13,7 +13,7 @@ const Project3 = () => {
           <hr className="break"/>
           <p className="project-stacks">Next.js, Scss, Netlify.</p>
           <div className="project-links">
-          <a href="https://moodiday.com/" className="project-site">Site</a>
+          <a href="https://deploy--stunning-semolina-2fbfd2.netlify.app/" className="project-site">Site</a>
           </div>
         </div>
       </section>
