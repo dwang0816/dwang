@@ -11,7 +11,7 @@ const Project1 = () => {
           <h1 className="project-title">NYC Trees</h1>
           <p className="project-description">A data visualization app that display dated trees of New York City.</p>
           <hr className="break"/>
-          <p className="project-stacks">React, MapBox, Ruby on Rails, Heroku.</p>
+          <p className="project-stacks">React.js, MapBox.js, Ruby on Rails.</p>
           <div className="project-links">
           <a href="https://scintillating-pasca-0fd429.netlify.app/" className="project-site">Site</a>
           <a href="https://github.com/dwang0816/Nyc-Trees-Frontend/blob/master/README.md" className="project-github">Github</a>
