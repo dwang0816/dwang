@@ -11,7 +11,7 @@ const Project1 = () => {
           <h1 className="project-title">Stripeify</h1>
           <p className="project-description">A React.js web app for listening and voting on playlists created by users.</p>
           <hr className="break"/>
-          <p className="project-stacks">React, Ruby on Rails, PostgreSQL, SCSS, AudioSpectrum.</p>
+          <p className="project-stacks">React.js, Ruby on Rails, PostgreSQL, AudioSpectrum.</p>
           <div className="project-links">
           <a href="https://github.com/dwang0816/Stripeify-Frontend" className="project-site">Frontend</a>
           <a href="https://github.com/dwang0816/stripeify-backend" className="project-github">Backend</a>
