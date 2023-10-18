@@ -9,7 +9,7 @@ const Project4 = () => {
         <div className="project-container">
           <img className="project-picture" alt="iwomantv" src={iwomantv}/>
           <h1 className="project-title">iWomanTV</h1>
-          <p className="project-description">Wordpress Client Project.</p>
+          <p className="project-description">A social media platform focused in engagement with women and minorities.</p>
           <hr className="break"/>
           <p className="project-stacks">Wordpress, PHP.</p>
           <div className="project-links">
