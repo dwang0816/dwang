@@ -9,7 +9,9 @@ const Project1 = () => {
         <div className="project-container">
           <img className="project-picture" alt="nyc-trees" src={trees}/>
           <h1 className="project-title">NYC Trees</h1>
-          <p className="project-description">A data visualization app that display dated trees of New York City.</p>
+          <p className="project-description">🌳 NYC Tree Atlas – Explore the City's Green History!
+
+NYC Tree Atlas is a data visualization app that showcases the diverse and historic trees of New York City. 🌎 Using interactive maps and detailed insights, users can explore dated trees across the city, uncovering their species, age, and ecological impact. Whether you're an urban explorer, nature enthusiast, or data lover, this app brings the green heartbeat of NYC to life. 🌿✨</p>
           <hr className="break"/>
           <p className="project-stacks">React.js, MapBox.js, Ruby on Rails.</p>
           <div className="project-links">
