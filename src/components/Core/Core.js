@@ -13,9 +13,9 @@ export default class Core extends Component {
     console.log(THREE)
     return (
       <div className="core-container">
+        <Project4/>
         <Project1/>
         <Project3/>
-        <Project4/>
         <Project2/>
         
       </div>
