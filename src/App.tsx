@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-do
 import Home from './components/Home';
 import Projects from './components/Projects';
 import About from './components/About';
-import ThreeBackground from './components/ThreeBackground';
 import GlobeContainer from './components/GlobeContainer';
 import './App.css';
 
@@ -53,7 +52,6 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="layout">
-        <ThreeBackground />
         <button 
           className="mobile-menu-button" 
           onClick={toggleSidebar}
