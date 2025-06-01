@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-do
 import Home from './components/Home';
 import Projects from './components/Projects';
 import About from './components/About';
+import ThreeBackground from './components/ThreeBackground';
+import GlobeContainer from './components/GlobeContainer';
 import './App.css';
 
 const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
@@ -24,6 +26,7 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
           <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </nav>
+        <GlobeContainer />
       </div>
       <div className="sidebar-footer">
         <div style={{fontSize: '1.2em', marginBottom: 8}}>
@@ -50,6 +53,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="layout">
+        <ThreeBackground />
         <button 
           className="mobile-menu-button" 
           onClick={toggleSidebar}
