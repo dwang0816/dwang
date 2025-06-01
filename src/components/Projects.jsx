@@ -49,11 +49,11 @@ const Projects = () => (
             <h3>{project.title}</h3>
             <p className="project-description">{project.description}</p>
             <p className="project-stack">{project.stack}</p>
-            <div className="project-links">
-              {project.links.map((link, lidx) => (
-                <a href={link.url} key={lidx} target="_blank" rel="noopener noreferrer">{link.label}</a>
-              ))}
-            </div>
+          </div>
+          <div className="project-links">
+            {project.links.map((link, lidx) => (
+              <a href={link.url} key={lidx} target="_blank" rel="noopener noreferrer">{link.label}</a>
+            ))}
           </div>
         </div>
       ))}
