@@ -68,11 +68,3 @@ I'm always interested in discussing technology, innovation, and potential collab
 
 ---
 Just a developer trying to build useful things.
-
-```javascript
-// Life is like coding:
-// Learn constantly
-// Fix bugs patiently
-// Commit changes mindfully
-// Push forward daily
-```
