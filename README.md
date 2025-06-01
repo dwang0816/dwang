@@ -56,7 +56,6 @@ A social media platform dedicated to empowering women and minorities, built with
 
 - Certified Scrum Master (CSM)
 - ServiceNow Certified System Administrator
-- [Additional relevant certifications]
 
 ## 🤝 Let's Connect
 
