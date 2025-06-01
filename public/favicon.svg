@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="256" fill="#232323"/>
+  
+  <!-- DW Text -->
+  <text x="256" y="290" font-family="Merriweather, serif" font-size="240" font-weight="900" 
+        fill="#ffffff" text-anchor="middle" dominant-baseline="middle"
+        style="letter-spacing: -15px;">
+    DW
+  </text>
+  
+  <!-- Subtle Gradient Overlay -->
+  <circle cx="256" cy="256" r="256" fill="url(#gradient)" fill-opacity="0.15"/>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.25"/>
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.15"/>
+    </linearGradient>
+  </defs>
+</svg> 
