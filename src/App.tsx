@@ -9,7 +9,7 @@ const Sidebar = () => (
   <aside className="sidebar">
     <div>
       <div className="sidebar-title">Dennis<br/>Wang</div>
-      <div className="sidebar-subtitle">Software Engineer. Cloud, Observability, Hardware &amp; DevOps.</div>
+      <div className="sidebar-subtitle">Full-Stack Software Engineer | Certified Scrum Master | ServiceNow Certified System Administrator | Cloud & AI Enthusiast | Driving Digital Transformation and Scalable Solutions.</div>
       <nav>
         <NavLink to="/" end>Home</NavLink>
         <NavLink to="/about">About</NavLink>
