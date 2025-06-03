@@ -19,7 +19,7 @@ const About = () => (
     </ul>
     <h3>Contact</h3>
     <p>
-      Connect with me on <a href="https://www.linkedin.com/in/dennis-wang-b2a99370/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+      Connect with me on <a href="https://www.linkedin.com/in/denniswang4/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
     </p>
   </div>
 );
