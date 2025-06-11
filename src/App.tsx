@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-do
 import Home from './components/Home';
 import Projects from './components/Projects';
 import About from './components/About';
+import Highlights from './components/Highlights';
 import GlobeContainer from './components/GlobeContainer';
 import './App.css';
 
@@ -20,6 +21,7 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
         <div className="sidebar-subtitle">Full-Stack Software Engineer | Certified Scrum Master | ServiceNow Certified System Administrator | Cloud & AI Enthusiast | Driving Digital Transformation and Scalable Solutions.</div>
         <nav>
           <NavLink to="/" end onClick={handleLinkClick}>Home</NavLink>
+          <NavLink to="/highlights" onClick={handleLinkClick}>Highlights</NavLink>
           <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
           <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
           <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -63,6 +65,7 @@ const App: React.FC = () => {
         <main className="main" onClick={closeSidebar}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/highlights" element={<Highlights />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
           </Routes>
