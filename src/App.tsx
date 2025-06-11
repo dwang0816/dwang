@@ -24,8 +24,8 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
           <NavLink to="/highlights" onClick={handleLinkClick}>Highlights</NavLink>
           <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
           <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
-          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.github.com/dwang0816/" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/denniswang4/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </nav>
         <GlobeContainer />
       </div>
