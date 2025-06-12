@@ -52,7 +52,7 @@ const Highlights = () => {
             </div>
             <div className="highlight-links">
               <a 
-                href="https://6849fe06728fba5e015ce345--mental-gym.netlify.app" 
+                href="https://mental-gym.netlify.app" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="primary-link"
