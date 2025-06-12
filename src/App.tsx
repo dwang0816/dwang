@@ -29,13 +29,6 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
         </nav>
         <GlobeContainer />
       </div>
-      <div className="sidebar-footer">
-        <div style={{fontSize: '1.2em', marginBottom: 8}}>
-          <span style={{marginRight: 8}}>📡</span>
-          <span style={{marginRight: 8}}>💬</span>
-          <span>✉️</span>
-        </div>
-      </div>
     </aside>
   );
 };
