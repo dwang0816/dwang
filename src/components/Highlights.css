@@ -11,6 +11,7 @@
   color: #232323;
   position: relative;
   min-height: 100vh;
+  background: #f7f8fa;
 }
 
 .highlights-container h2 {
@@ -311,6 +312,7 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 4;
+  background: transparent;
 }
 
 .highlights-main-content {
@@ -432,6 +434,13 @@
 @keyframes float-8 {
   0% { transform: translate(0, 0) rotate(0deg); }
   100% { transform: translate(30px, 10px) rotate(-18deg); }
+}
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  .highlights-container {
+    min-height: calc(100vh + 1px);
+  }
 }
 
 /* Responsive Animations */
