@@ -4,6 +4,13 @@ import './Home.css';
 
 const articles = [
   {
+    title: "Why Moving to Pomona, California Might Be the Smartest Decision You Make",
+    date: '4 Jun 2025',
+    summary: `An AI-powered case study analyzing Pomona's emerging real estate market using Notion. Located at the crossroads of major freeways with significantly lower prices than neighboring cities, Pomona offers compelling investment opportunities. This AI-driven analysis explores prime location advantages, affordability metrics, city revitalization initiatives, and long-term growth potential for both homebuyers and investors.`,
+    url: 'https://www.notion.so/Why-Moving-to-Pomona-California-Might-Be-the-Smartest-Decision-You-Make-208d1d71cfeb8068ace6c8bb79d85b3b?source=copy_link',
+    category: 'AI/Real Estate',
+  },
+  {
     title: "You're Being Lied to About AI's Purpose: What Simon Sinek Teaches Us About Being Human in a Digital Age",
     date: '15 May 2025',
     summary: `AI isn't just about efficiency or replacing jobs—it's about what it means to be human. Drawing on Simon Sinek's insights, this article explores how our search for meaning, connection, and purpose is more important than ever in a digital world.`,
