@@ -39,7 +39,7 @@ const Highlights = () => {
         <div className="highlight-section">
           <h3>Featured Project</h3>
           <div className="highlight-card">
-            <h4>Mental Gym</h4>
+            <h4>The Mental Gym</h4>
             <p className="highlight-description">
               Sometimes the hardest problems have the simplest solutions, and sometimes simple questions reveal the deepest truths. 
               This platform creates spaces where your mind can wander, struggle, and discover. It's not about being smarter—
