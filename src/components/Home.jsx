@@ -2,6 +2,17 @@
 import React from 'react';
 import './Home.css';
 
+const sideProjects = [
+  {
+    title: 'Case Study: Automating Inventory Updates for Hadson Toko',
+    date: 'Ongoing',
+    readTime: 'Side Project',
+    summary: 'Designing and implementing a lightweight automation pipeline to sync product inventory across sales channels. Focus areas: operational bottleneck discovery, data flow mapping, API/webhook strategy, and measurable impact on manual workload.',
+    url: 'https://www.notion.so/Case-Study-Automating-Inventory-Updates-for-Hadson-Toko-24bd1d71cfeb80fc9230db9d763d2475?source=copy_link',
+    category: 'Current Project',
+  }
+];
+
 const articles = [
   {
     title: "Why Moving to Pomona, California Might Be the Smartest Decision You Make",
@@ -69,6 +80,23 @@ const sortedArticles = [...articles].sort((a, b) => {
 
 const Home = () => (
   <div className="articles-centerer">
+    {sideProjects.map((sp, idx) => (
+      <article className="article-card" key={`sp-${idx}`}>
+        <header>
+          <h2>{sp.title}</h2>
+          <div className="article-meta">
+            <span>{sp.date}</span>
+            <span className="dot">•</span>
+            <span>{sp.readTime}</span>
+            <span className="dot">•</span>
+            <span>{sp.category}</span>
+          </div>
+        </header>
+        <p>{sp.summary}</p>
+        <a className="more-link" href={sp.url} target="_blank" rel="noopener noreferrer">View project</a>
+      </article>
+    ))}
+
     {sortedArticles.map((article, idx) => (
       <article className="article-card" key={idx}>
         <header>
