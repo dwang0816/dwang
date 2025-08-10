@@ -98,6 +98,11 @@ html, body, #root, .App {
   max-width: 760px;
 }
 
+/* Allow Projects page to use full available width */
+.main > .projects-container {
+  max-width: none;
+}
+
 /* Mobile Menu Button */
 .mobile-menu-button {
   display: none;
@@ -188,7 +193,7 @@ h1 {
   font-size: 2.2rem;
   margin-bottom: 0.7em;
 }
-h2 {
+ h2 {
   font-size: 1.5rem;
   margin-bottom: 0.6em;
 }
