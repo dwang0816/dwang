@@ -7,7 +7,7 @@ const sideProjects = [
     title: 'Case Study: Automating Inventory Updates for Hadson Toko',
     date: 'Ongoing',
     readTime: 'Side Project',
-    summary: 'Designing and implementing a lightweight automation pipeline to sync product inventory across sales channels. Focus areas: operational bottleneck discovery, data flow mapping, API/webhook strategy, and measurable impact on manual workload.',
+    summary: 'Designed and implemented a fully automated inventory update system for a local distributor using Azure Data Factory with a self-hosted integration runtime. Migrated data directly from a local SQL Server to Airtable, enabling hourly inventory updates, reducing manual work, and providing a foundation for future analytics. Implemented robust error handling, logging, and a 6-month maintenance plan to ensure reliable operation.',
     url: 'https://www.notion.so/Case-Study-Automating-Inventory-Updates-for-Hadson-Toko-24bd1d71cfeb80fc9230db9d763d2475?source=copy_link',
     category: 'Current Project',
   }
