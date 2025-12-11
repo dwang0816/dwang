@@ -32,6 +32,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
   align-items: stretch;
+  grid-auto-rows: min-content;
 }
 
 /* Large screens: 4 columns */
@@ -53,7 +54,9 @@
   min-height: 460px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .project-item:hover {
@@ -77,6 +80,8 @@
   margin: 0;
   line-height: 1.25;
   flex: 1;
+  min-width: 0;
+  word-wrap: break-word;
 }
 
 .project-category {
@@ -96,7 +101,9 @@
   line-height: 1.6;
   margin: 0;
   flex: 1;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  min-width: 0;
 }
 
 .project-footer {
