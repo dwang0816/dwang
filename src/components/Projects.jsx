@@ -3,19 +3,82 @@ import React from 'react';
 import './Projects.css';
 
 const projects = [
-  // Special current project
+  // Recent projects
+  {
+    title: 'Core Mechanical',
+    description: 'Industry-leading mechanical contracting website featuring complete HVAC, refrigeration, chiller, and industrial piping services. Designed for facility managers with 24/7 emergency support, planned maintenance programs, and custom design-build solutions.',
+    stack: 'React, Vite, Modern Web',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://core-mechanical.vercel.app' }
+    ]
+  },
+  {
+    title: 'Elevated Solutions',
+    description: 'Mechanical insulation, scaffolding, and maintenance services website for the Midwest region. Sister company modeled after Core Mechanical, featuring comprehensive industrial solutions with 24/7 emergency service and certified professionals.',
+    stack: 'React, Vite, Modern Web',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://elevated-seven.vercel.app/' }
+    ]
+  },
+  {
+    title: "Mike's Trash Service",
+    description: 'Local waste management service website for Fulton County and Rochester, Indiana. Features residential pickup, dumpster rentals, bulk pickup, and roll-off containers. Serving the community for over 30 years with honest, neighbor-focused service.',
+    stack: 'React, Vite, Modern Web',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://mike-trash.vercel.app/' }
+    ]
+  },
+  {
+    title: 'City of Rochester',
+    description: 'Municipal website for the City of Rochester, Indiana. Features city services, utilities, government information, events calendar, and community resources. Serving residents with transparency and dedication to community prosperity.',
+    stack: 'WordPress, Municipal Platform',
+    category: 'WordPress',
+    links: [
+      { label: 'View Site', url: 'https://rochester.in.us' }
+    ]
+  },
+  {
+    title: 'Constellation Manufacturing',
+    description: 'Precision manufacturing company website showcasing specialized manufacturing capabilities and services. Professional industrial platform highlighting expertise and quality craftsmanship.',
+    stack: 'Web Platform',
+    category: 'Web Development',
+    links: [
+      { label: 'View Site', url: 'https://www.constmfg.com' }
+    ]
+  },
+  {
+    title: 'Split Road Media - Internal Tools',
+    description: 'Internal payment processing tool and client sign-up form system for Split Road Media. Streamlined workflow solutions for agency operations and client management.',
+    stack: 'Internal Tools',
+    category: 'Internal',
+    links: []
+  },
+  {
+    title: 'Discs4Bros',
+    description: 'Disc golf product website and future e-commerce platform. Designed for disc golf enthusiasts with product showcase and future online store capabilities.',
+    stack: 'Web Platform',
+    category: 'Web Development',
+    links: [
+      { label: 'View Site', url: 'https://discs4bros.com' }
+    ]
+  },
+
+  // Halted project
   {
     title: 'Fulton Economic Development (FEDCO)',
-    description: 'Economic development website for Fulton County highlighting relocation, small business programs (BizGro), county facts, workforce and top employers. Currently on Squarespace; in-progress React rebuild to modernize UX and performance.',
-    stack: 'Squarespace → React (Rebuild)',
-    category: 'Current Project',
+    description: 'Economic development website for Fulton County highlighting relocation, small business programs (BizGro), county facts, workforce and top employers. Currently on Squarespace; React rebuild project halted.',
+    stack: 'Squarespace → React (Halted)',
+    category: 'Halted',
     links: [
       { label: 'Current Site', url: 'https://www.fultondevelopment.org' },
       { label: 'React Preview', url: 'https://fedco.netlify.app' }
     ]
   },
 
-  // New projects at the top in the exact order requested
+  // Previous projects
   {
     title: 'Creekside Guest House (MissionsBnB)',
     description: 'Booking request site for a family-run guest house and adventures in North Central Indiana. Features a comprehensive reservation inquiry form and simple content management.',
