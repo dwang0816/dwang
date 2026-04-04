@@ -15,6 +15,14 @@ const sideProjects = [
 
 const articles = [
   {
+    title: "Mental Gyms for the AI Age: Why Humanity Still Needs Conflict",
+    date: '10 May 2025',
+    readTime: '5 min read',
+    summary: `In a world where AI handles more of our daily tasks, we're losing something precious: the struggle that makes us human. This piece explores why we still need challenges, disagreements, and mental friction to grow as people. It's about staying sharp, thinking for ourselves, and remembering that our greatest strength isn't convenience—it's resilience.`,
+    url: 'https://medium.com/@dwang0816/mental-gyms-for-the-ai-age-why-humanity-still-needs-conflict-b1ae3fde043b',
+    category: 'AI/Philosophy',
+  },
+  {
     title: "Why Moving to Pomona, California Might Be the Smartest Decision You Make",
     date: '4 Jun 2025',
     readTime: '5 min read',

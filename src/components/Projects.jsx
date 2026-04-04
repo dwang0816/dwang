@@ -5,6 +5,24 @@ import './Projects.css';
 const projects = [
   // Recent projects
   {
+    title: 'Made Here Events',
+    description: 'Event venue and experience website for Made Here Events. Showcasing spaces, packages, and booking information for a modern events destination.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://www.madehere.events/' }
+    ]
+  },
+  {
+    title: 'Rochester Metals',
+    description: 'Website for Rochester Metals, a metal manufacturing and supply company. Features product and services information with a professional industrial design.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://rochestermetals.com/' }
+    ]
+  },
+  {
     title: 'Core Mechanical',
     description: 'Industry-leading mechanical contracting website featuring complete HVAC, refrigeration, chiller, and industrial piping services. Designed for facility managers with 24/7 emergency support, planned maintenance programs, and custom design-build solutions.',
     stack: 'React, Vite, Modern Web',
@@ -43,8 +61,8 @@ const projects = [
   {
     title: 'Constellation Manufacturing',
     description: 'Precision manufacturing company website showcasing specialized manufacturing capabilities and services. Professional industrial platform highlighting expertise and quality craftsmanship.',
-    stack: 'Web Platform',
-    category: 'Web Development',
+    stack: 'React, Vite',
+    category: 'React',
     links: [
       { label: 'View Site', url: 'https://www.constmfg.com' }
     ]
@@ -59,22 +77,20 @@ const projects = [
   {
     title: 'Discs4Bros',
     description: 'Disc golf product website and future e-commerce platform. Designed for disc golf enthusiasts with product showcase and future online store capabilities.',
-    stack: 'Web Platform',
-    category: 'Web Development',
+    stack: 'React, Vite',
+    category: 'React',
     links: [
       { label: 'View Site', url: 'https://discs4bros.com' }
     ]
   },
 
-  // Halted project
   {
     title: 'Fulton Economic Development (FEDCO)',
-    description: 'Economic development website for Fulton County highlighting relocation, small business programs (BizGro), county facts, workforce and top employers. Currently on Squarespace; React rebuild project halted.',
-    stack: 'Squarespace → React (Halted)',
-    category: 'Halted',
+    description: 'Economic development website for Fulton County highlighting relocation opportunities, small business programs (BizGro), county facts, workforce data, and top employers.',
+    stack: 'React, Vite',
+    category: 'React',
     links: [
-      { label: 'Current Site', url: 'https://www.fultondevelopment.org' },
-      { label: 'React Preview', url: 'https://fedco.netlify.app' }
+      { label: 'View Site', url: 'https://www.fultonedc.com/' }
     ]
   },
 
@@ -109,10 +125,10 @@ const projects = [
   {
     title: 'Fulton County Airport',
     description: 'Municipal airport site offering facility info, services, and quick access to essential details like fuel, hours, and contacts.',
-    stack: 'WordPress',
-    category: 'WordPress',
+    stack: 'React, Vite',
+    category: 'React',
     links: [
-      { label: 'View Site', url: 'https://fultoncountyairport.net' }
+      { label: 'View Site', url: 'https://fulton-county-airport.vercel.app/' }
     ]
   },
   {
@@ -130,7 +146,7 @@ const projects = [
     stack: 'WordPress',
     category: 'WordPress',
     links: [
-      { label: 'View Site', url: 'https://hartlandenterprise.com' }
+      { label: 'View Site', url: 'https://www.hartlandenterprise.com/' }
     ]
   },
   {
@@ -178,6 +194,15 @@ const projects = [
     category: 'WordPress',
     links: [
       { label: 'View Site', url: 'https://visitstarkecounty.com' }
+    ]
+  },
+  {
+    title: "The Beginner's Guide",
+    description: 'A project built alongside an article about creative paralysis and what it means to make something without a clear reason. Less about answers, more about sitting with the questions.',
+    stack: 'React.js, Netlify',
+    category: 'React',
+    links: [
+      { label: 'View Project', url: 'https://the-beginners-guide.netlify.app' }
     ]
   },
   {

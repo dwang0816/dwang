@@ -77,3 +77,7 @@ Write-Host ""
 Get-Content ~/.ssh/id_ed25519_account1.pub | Set-Clipboard
 Write-Host "Account 1 public key copied to clipboard!" -ForegroundColor Green
 
+
+
+
+

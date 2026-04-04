@@ -1,17 +1,24 @@
 .highlights-container {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 60px 40px;
   background: white;
   color: #333;
   min-height: 100vh;
 }
 
 .highlights-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px;
   display: flex;
   flex-direction: column;
   gap: 40px;
+}
+
+.highlights-cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
 }
 
 .highlights-content h2 {
@@ -141,8 +148,13 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-  .highlights-container {
+  .highlights-content {
     padding: 40px 20px;
+  }
+
+  .highlights-cards-row {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
   
   .highlights-content h2 {
@@ -167,7 +179,7 @@
 }
 
 @media (max-width: 480px) {
-  .highlights-container {
+  .highlights-content {
     padding: 30px 15px;
   }
   

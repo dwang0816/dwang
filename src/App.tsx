@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import Home from './components/Home';
 import Projects from './components/Projects';
+import Games from './components/Games';
 import About from './components/About';
 import Highlights from './components/Highlights';
 import GlobeContainer from './components/GlobeContainer';
@@ -24,6 +25,7 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
           <NavLink to="/highlights" onClick={handleLinkClick}>Highlights</NavLink>
           <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
           <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
+          <NavLink to="/games" onClick={handleLinkClick}>Games</NavLink>
           <a href="https://www.github.com/dwang0816/" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="https://www.linkedin.com/in/denniswang4/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </nav>
@@ -60,6 +62,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/highlights" element={<Highlights />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/games" element={<Games />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>

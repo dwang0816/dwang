@@ -85,22 +85,15 @@ html, body, #root, .App {
 .main {
   flex: 1;
   margin-left: 240px;
-  padding: 48px 24px 32px 24px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   box-sizing: border-box;
 }
 
 .main > * {
   width: 100%;
-  max-width: 760px;
-}
-
-/* Allow Projects page to use full available width */
-.main > .projects-container {
-  max-width: none;
 }
 
 /* Mobile Menu Button */
@@ -138,7 +131,6 @@ html, body, #root, .App {
 
   .main {
     margin-left: 0;
-    padding: 24px 16px;
   }
 
   .sidebar .sidebar-title {
