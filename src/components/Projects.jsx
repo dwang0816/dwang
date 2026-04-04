@@ -59,7 +59,7 @@ const projects = [
     ]
   },
   {
-    title: 'Constellation Manufacturing',
+    title: 'Constitution Manufacturing',
     description: 'Precision manufacturing company website showcasing specialized manufacturing capabilities and services. Professional industrial platform highlighting expertise and quality craftsmanship.',
     stack: 'React, Vite',
     category: 'React',
