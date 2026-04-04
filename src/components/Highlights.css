@@ -18,7 +18,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
-  align-items: start;
+  align-items: stretch;
+}
+
+.highlight-section {
+  display: flex;
+  flex-direction: column;
 }
 
 .highlights-content h2 {
@@ -47,6 +52,17 @@
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.highlight-description {
+  flex: 1;
+}
+
+.highlight-links {
+  margin-top: auto;
 }
 
 .highlight-card:hover {
@@ -71,6 +87,7 @@
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  flex: 1;
 }
 
 .highlight-meta {
@@ -96,6 +113,8 @@
   display: flex;
   justify-content: center;
   gap: 15px;
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 .primary-link {
