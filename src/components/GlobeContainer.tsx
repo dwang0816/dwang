@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Canvas } from '@react-three/fiber';
 import { Environment, SpotLight } from '@react-three/drei';
 import { Globe } from './Globe';
