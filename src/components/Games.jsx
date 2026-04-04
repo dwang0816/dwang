@@ -33,7 +33,7 @@ const Games = () => (
   <div className="games-container">
     <div className="games-wrapper">
       <div className="games-content">
-        <h2>Games</h2>
+        <h2>Play</h2>
         <p className="games-subtitle">Interactive experiences and experiments.</p>
         <div className="games-grid">
           {games.map((game, idx) => (
