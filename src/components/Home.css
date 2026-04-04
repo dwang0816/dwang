@@ -212,7 +212,7 @@
   gap: 40px;
   padding: 40px 32px;
   justify-content: center;
-  align-items: start;
+  align-items: stretch;
 }
 
 .article-card {
@@ -275,7 +275,7 @@
   font-size: 1.15rem;
   line-height: 1.8;
   margin: 24px 0 40px;
-  flex-grow: 1;
+  flex: 1;
 }
 
 .more-link {
