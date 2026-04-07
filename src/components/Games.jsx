@@ -24,7 +24,7 @@ const games = [
     description: 'A digital adaptation of the popular connection card game. Draw cards, answer meaningful questions, and build genuine connections with the people around you.',
     stack: 'React, Vercel',
     links: [
-      { label: 'Play', url: 'https://v0-we-re-not-strangers-game.vercel.app' }
+      { label: 'Play', url: 'https://we-are-not-really-strangers.vercel.app' }
     ]
   }
 ];

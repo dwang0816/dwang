@@ -5,6 +5,60 @@ import './Projects.css';
 const projects = [
   // Recent projects
   {
+    title: 'Eastside Stories',
+    description: 'A community storytelling and media platform amplifying AAPI voices, creatives, and culture. Built as an early-stage creator collective focused on authentic narratives, media, and community-driven content.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://eastsidestories.vercel.app' }
+    ]
+  },
+  {
+    title: 'Pure Play Mahjong',
+    description: 'A lifestyle brand and shop centered around modernized, design-conscious mahjong sets. Targeted toward a younger, aesthetic-forward audience looking to bring a fresh take to a classic game.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://www.pureplaymahjong.com' }
+    ]
+  },
+  {
+    title: 'Bears by Brit',
+    description: 'An artisan handmade shop by an independent creator specializing in custom plush bears and soft goods. A personal brand storefront bringing handcrafted charm to online retail.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://www.bearsbybrit.com' }
+    ]
+  },
+  {
+    title: 'QSpace Crafter',
+    description: 'A content and workspace crafting tool designed to help users generate, structure, and organize ideas or knowledge. A lightweight builder for creative thinkers and structured minds.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://qspacecrafter.vercel.app' }
+    ]
+  },
+  {
+    title: 'Constantly Create Shop',
+    description: 'A custom e-commerce storefront for an independent creator brand selling original products, art, or merch. Built as a standalone shop with a focus on personal brand identity.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://constantlycreateshop.vercel.app' }
+    ]
+  },
+  {
+    title: 'GED Prep',
+    description: 'An interactive GED preparation platform to help learners study and practice for the General Educational Development test. Features subject-focused modules and practice materials.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://ged-prep.vercel.app' }
+    ]
+  },
+  {
     title: 'Made Here Events',
     description: 'Event venue and experience website for Made Here Events. Showcasing spaces, packages, and booking information for a modern events destination.',
     stack: 'React, Vite',
