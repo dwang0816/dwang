@@ -148,6 +148,25 @@ const projects = [
     ]
   },
 
+  {
+    title: 'Ruthless Bar',
+    description: 'Website for Ruthless Bar, a modern bar and nightlife destination. Features the venue\'s atmosphere, drink offerings, and event information with a bold, brand-forward design.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://ruthlessbar.com' }
+    ]
+  },
+  {
+    title: 'Akron Vet Clinic',
+    description: 'Professional veterinary clinic website for Akron Vet Clinic. Showcases services, staff, and essential information for pet owners seeking compassionate and quality animal care.',
+    stack: 'React, Vite',
+    category: 'React',
+    links: [
+      { label: 'View Site', url: 'https://www.akronvetclinic.com' }
+    ]
+  },
+
   // Previous projects
   {
     title: 'Creekside Guest House (MissionsBnB)',
