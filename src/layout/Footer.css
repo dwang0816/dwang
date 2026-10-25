@@ -1,0 +1,15 @@
+.footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 96px;
+}
+
+.footer-inner {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 24px var(--gutter) 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  font-size: 0.9rem;
+  color: var(--ink-3);
+}

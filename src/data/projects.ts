@@ -1,0 +1,588 @@
+/**
+ * Every project, in one place.
+ *
+ * `category` is who the work was for, which is how the Projects page groups it.
+ * `year` is when the project last had real work, so each group reads newest first.
+ * `url` is only set when the link was checked and resolves; internal tools and
+ * client sites behind a login say so instead of linking to a login page.
+ */
+export type Category = 'client' | 'personal' | 'play' | 'early';
+
+export interface Project {
+  name: string;
+  blurb: string;
+  stack: string[];
+  category: Category;
+  year: number;
+  url?: string;
+  /** Second link, usually source code. */
+  code?: string;
+  /** Shown instead of a link when there is nothing public to open. */
+  access?: string;
+  /** Pulled onto the home page. */
+  featured?: boolean;
+}
+
+export const categories: Record<Category, { title: string; blurb: string }> = {
+  client: {
+    title: 'Client work',
+    blurb:
+      'Built at Split Road Media for businesses, nonprofits and towns across northern Indiana. Most are marketing sites; a few are stores, league trackers and internal tools.',
+  },
+  personal: {
+    title: 'Personal projects',
+    blurb:
+      'Things I built on my own time: trackers for mahjong and trading cards, sites for friends and family, and tools that scratch an itch.',
+  },
+  play: {
+    title: 'Play',
+    blurb: 'Interactive experiments and games. Open one and try it.',
+  },
+  early: {
+    title: 'Earlier work',
+    blurb: 'Full-stack projects from 2021 to 2023, around the time I moved into software from the service desk.',
+  },
+};
+
+export const categoryOrder: Category[] = ['client', 'personal', 'play', 'early'];
+
+export const projects: Project[] = [
+  // ───────────────────────── Client work ─────────────────────────
+  {
+    name: 'Fulton County Disc Golf League',
+    blurb: 'League site that posts weekly results, player stats, handicaps and leaderboards.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.fcdgl.com',
+    featured: true,
+  },
+  {
+    name: 'Press Peels',
+    blurb: 'Store for a custom DTF transfer printer, with a gang-sheet builder for bulk orders.',
+    stack: ['Next.js', 'Tailwind', 'Stripe'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.presspeels.com',
+  },
+  {
+    name: 'Cass County Historical Society',
+    blurb: 'Rebuilt site for the museum in Logansport: exhibits, events and membership.',
+    stack: ['Next.js', 'Tailwind', 'Neon'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.casscountyhistory.org',
+    featured: true,
+  },
+  {
+    name: 'Made Here 2026',
+    blurb: 'Event site for a manufacturing showcase and networking evening in Winona Lake.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.madehere.events',
+  },
+  {
+    name: 'Town of Etna Green',
+    blurb: 'Official town site: pay utility bills, check the calendar, find municipal codes, reach Town Hall.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://etnagreen.in.gov',
+    featured: true,
+  },
+  {
+    name: "Mike's Trash Service",
+    blurb: 'Family-owned trash service in Fulton County: residential pickup, dumpsters, bulk and roll-off rentals.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.mikestrashllc.com',
+  },
+  {
+    name: 'Eaton Fencing',
+    blurb: 'Fencing contractor in Rochester building agricultural gates and residential and commercial fence, with quote requests.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.eatonfencing.com',
+  },
+  {
+    name: "RIP 'EM ALL",
+    blurb: 'Pokémon TCG site that tracks trending sets and ranks every card by live TCGplayer market price.',
+    stack: ['Next.js', 'Tailwind', 'Stripe'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.ripemall.com',
+  },
+  {
+    name: 'Split Road Media Quote Generator',
+    blurb: 'Internal dashboard for quoting print, design, web and media work: builds PDFs and emails them to accounting and clients.',
+    stack: ['Next.js', 'Postgres', 'Stripe'],
+    category: 'client',
+    year: 2026,
+    access: 'Internal tool',
+  },
+  {
+    name: 'PrintEst',
+    blurb: 'Web rebuild of a 1990s DOS print-estimating program, matching its screens and pricing for a commercial offset shop.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    access: 'Private',
+  },
+  {
+    name: 'Split Road Media Shops',
+    blurb: 'Hub that hosts the online stores built for clients, starting with a church merch store.',
+    stack: ['Next.js', 'Tailwind', 'Stripe'],
+    category: 'client',
+    year: 2026,
+    url: 'https://shop.splitroadmedia.com',
+  },
+  {
+    name: 'Kosciusko Senior Services',
+    blurb: 'Nonprofit serving seniors with Mobile Meals, accessible van transportation and a senior activity center.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.kosciuskoseniors.org',
+  },
+  {
+    name: 'Summers Insurance Agency',
+    blurb: 'Veteran-owned agency with offices in Rochester and Mishawaka: auto, home, life and Medicare coverage.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.summers-insurance.com',
+  },
+  {
+    name: 'Fallen Timber',
+    blurb: 'Tree service in Warsaw: removal, topping, trimming and stump grinding.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.fallen-timber.com',
+  },
+  {
+    name: "Joe's Hope Foundation",
+    blurb: 'Nonprofit giving financial and practical help to cancer patients and their families.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://joeshopefoundation.org',
+  },
+  {
+    name: 'Ruthless Bar & Patio',
+    blurb: 'Bar and patio with craft beer and cocktails, a downloadable menu and contact details.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://ruthlessbar.com',
+  },
+  {
+    name: "Chuck's U-Stor-It",
+    blurb: 'Self-storage in Rochester, listing unit sizes from 5×10 to 10×30.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.chucksustorit.com',
+  },
+  {
+    name: 'Solid Rock Roofing & Exteriors',
+    blurb: 'Residential roofing, gutters and siding contractor.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.callsolidrock.com',
+  },
+  {
+    name: 'Akron Veterinary Clinic',
+    blurb: 'Small-animal and exotic-pet clinic in Akron, Indiana: services, staff and contact.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.akronvetclinic.com',
+  },
+  {
+    name: 'The Dam Landing',
+    blurb: 'Restaurant and tiki bar on Lake Manitou: burgers, tacos, craft beer and live music.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.damlanding.com',
+  },
+  {
+    name: 'Fulton County Airport',
+    blurb: 'Public-use general aviation airport (KRCR): fuel, hangars, flight instruction and visitor information.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.fultoncountyairport.net',
+  },
+  {
+    name: 'Fulton Economic Development Corporation',
+    blurb: 'County economic development site: relocation, small-business programs, workforce data and top employers.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.fultonedc.com',
+  },
+  {
+    name: 'Rochester Metal Products',
+    blurb: 'ISO 9001 foundry making gray and ductile iron castings, with careers information.',
+    stack: ['Next.js', 'Tailwind', 'Neon'],
+    category: 'client',
+    year: 2026,
+    url: 'https://rochestermetal.vercel.app',
+  },
+  {
+    name: '2A Constitution MFG',
+    blurb: 'Precision manufacturer offering Swiss turning, 4- and 5-axis milling and CMM inspection.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2026,
+    url: 'https://www.constmfg.com',
+  },
+  {
+    name: 'Split Road Media ClientPay',
+    blurb: 'Portal where agency clients pay invoices online by ACH or card.',
+    stack: ['Next.js', 'Stripe'],
+    category: 'client',
+    year: 2026,
+    access: 'Internal tool',
+  },
+  {
+    name: 'MSDC company store',
+    blurb: 'Employee apparel ordering store with payment and order notifications.',
+    stack: ['Next.js', 'Tailwind', 'Stripe'],
+    category: 'client',
+    year: 2026,
+    access: 'Private',
+  },
+  {
+    name: 'Hartland Enterprises',
+    blurb: 'Spray foam roofing, roof coatings and foam insulation contractor in northern Indiana.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2025,
+    url: 'https://www.hartlandenterprise.com',
+  },
+  {
+    name: 'Elevated Solutions',
+    blurb: 'Mechanical insulation, scaffolding, painting and maintenance for industrial clients across the Midwest.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2025,
+    url: 'https://www.elevated-i-s.com',
+  },
+  {
+    name: 'Core Mechanical',
+    blurb: 'HVAC, refrigeration and industrial piping contractor serving facility managers in northern Indiana.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2025,
+    url: 'https://core-mechanical.vercel.app',
+  },
+  {
+    name: 'Discs4Bros',
+    blurb: 'Limited-edition disc golf disc drops for a crew of regulars.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'client',
+    year: 2025,
+    url: 'https://discs4bros.com',
+  },
+  {
+    name: 'City of Rochester',
+    blurb: 'Municipal site for Rochester, Indiana: services, utilities, government and events.',
+    stack: ['WordPress'],
+    category: 'client',
+    year: 2025,
+    url: 'https://rochester.in.us',
+  },
+  {
+    name: 'Split Road Media',
+    blurb: 'The agency site: web, photography, video, graphics and print.',
+    stack: ['WordPress'],
+    category: 'client',
+    year: 2025,
+    url: 'https://splitroadmedia.com',
+  },
+  {
+    name: 'Creekside Guest House',
+    blurb: 'Booking requests for a family-run guest house and adventures in north-central Indiana.',
+    stack: ['WordPress'],
+    category: 'client',
+    year: 2025,
+    url: 'https://missionsbnb.com',
+  },
+  {
+    name: "Healey's Home Center",
+    blurb: 'Hardware, building materials, cabinetry and greenhouse departments for a local home center.',
+    stack: ['WordPress'],
+    category: 'client',
+    year: 2025,
+    url: 'https://healeyshomecenter.com',
+  },
+  {
+    name: 'The Times Theater',
+    blurb: 'Historic theater: events, live music, movies and a newsletter.',
+    stack: ['WordPress'],
+    category: 'client',
+    year: 2025,
+    url: 'https://thetimestheater.com',
+  },
+  {
+    name: 'Quality Lift Equipment',
+    blurb: 'Forklift dealer with an electric, diesel and LPG catalog plus repair services.',
+    stack: ['WordPress'],
+    category: 'client',
+    year: 2024,
+    url: 'https://qle-lift.com',
+  },
+  {
+    name: 'Visit Starke County',
+    blurb: 'Tourism site: attractions, outdoors, dining, lodging and events.',
+    stack: ['WordPress'],
+    category: 'client',
+    year: 2024,
+    url: 'https://visitstarkecounty.com',
+  },
+
+  // ───────────────────────── Personal projects ─────────────────────────
+  {
+    name: 'Chasing Grails',
+    blurb: 'Where to find Pokémon, One Piece and other TCG product: official drops, drawings, restocks, conventions and card shows, rescanned twice a day.',
+    stack: ['HTML', 'JSON', 'Vercel'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://chasing-grails.vercel.app',
+    code: 'https://github.com/dwang0816/chasing-grails',
+    featured: true,
+  },
+  {
+    name: 'TCG Forecast',
+    blurb: 'Price tracker for Pokémon, One Piece and Riftbound cards: the biggest risers and fallers from TCGplayer data, with a score for how much to trust each move.',
+    stack: ['Next.js', 'Postgres', 'Drizzle'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://tcg-forecast.vercel.app',
+    code: 'https://github.com/dwang0816/tcg-forecast',
+    featured: true,
+  },
+  {
+    name: 'Tilebook',
+    blurb: 'Match history and Elo ratings for Taiwanese and Cantonese mahjong, with player profiles and head-to-head records.',
+    stack: ['Next.js', 'Supabase'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://mahjong-rating.vercel.app',
+    code: 'https://github.com/dwang0816/mahjong-rating',
+    featured: true,
+  },
+  {
+    name: 'Pure Play Mahjong',
+    blurb: 'Classes in traditional Chinese mahjong, played without reference cards or yearly rule changes.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://www.pureplaymahjong.com',
+  },
+  {
+    name: 'Crystal Cho, product designer',
+    blurb: 'Portfolio with case studies, an about page and blog posts.',
+    stack: ['Vite', 'React', 'Tailwind'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://www.crystal-cho.com',
+  },
+  {
+    name: 'Free Finds',
+    blurb: 'Dashboard of free Facebook Marketplace listings near Flushing, filled by an hourly scraper with estimated eBay resale values.',
+    stack: ['Next.js', 'Playwright', 'Postgres'],
+    category: 'personal',
+    year: 2026,
+    access: 'Password protected',
+    code: 'https://github.com/dwang0816/fb-market-dashboard',
+  },
+  {
+    name: 'Our Family Tree',
+    blurb: 'Interactive family tree that connects generations of family history for relatives to explore.',
+    stack: ['Next.js', 'Neon', 'Framer Motion'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://ancestral-tree.vercel.app',
+  },
+  {
+    name: 'East Side Stories',
+    blurb: 'Documentary films, video series and community events centered on Asian American stories.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://www.eastsidestories.org',
+  },
+  {
+    name: 'Bears by Brit',
+    blurb: 'Handmade resin art shop that also books crafting events: moms’ nights, fundraisers, birthday parties.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://www.bearsbybrit.com',
+  },
+  {
+    name: 'QSpace Crafter',
+    blurb: 'Family-owned construction company serving NYC and Long Island: bathroom, kitchen, full-home and exterior remodels.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://qspacecrafter.vercel.app',
+  },
+  {
+    name: 'Constantly Create',
+    blurb: 'Custom apparel printer: screen printing, embroidery, DTG, DTF gang sheets and patches, with a quote flow.',
+    stack: ['Next.js', 'Tailwind', 'Stripe'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://constantlycreateshop.vercel.app',
+  },
+  {
+    name: 'GED Prep',
+    blurb: '200 practice questions across all four GED subjects, with explanations, progress tracking and study plans.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://ged-prep.vercel.app',
+  },
+  {
+    name: 'Daily Pump',
+    blurb: 'Builds a randomized workout every day at the intensity you pick.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'personal',
+    year: 2026,
+    url: 'https://workout-randomizer.vercel.app',
+  },
+  {
+    name: 'Inventory automation for Hadson Toko',
+    blurb: 'Azure Data Factory pipeline moving stock levels from an on-premises SQL Server into Airtable every hour, with logging and a maintenance plan. Written up as a case study.',
+    stack: ['Azure Data Factory', 'SQL Server', 'Airtable'],
+    category: 'personal',
+    year: 2025,
+    url: 'https://www.notion.so/Case-Study-Automating-Inventory-Updates-for-Hadson-Toko-24bd1d71cfeb80fc9230db9d763d2475',
+  },
+  {
+    name: 'The Mental Gym',
+    blurb: 'Daily reflection prompts with AI feedback, for practising critical thinking.',
+    stack: ['Vite', 'React', 'OpenAI'],
+    category: 'personal',
+    year: 2025,
+    url: 'https://mental-gym.netlify.app',
+  },
+  {
+    name: "What Char Doing?",
+    blurb: 'Live poll where friends vote on whether Char watches a movie, plays a game or decides herself.',
+    stack: ['Vite', 'React', 'Socket.IO'],
+    category: 'personal',
+    year: 2025,
+    url: 'https://whatchardoing3.netlify.app',
+  },
+  {
+    name: "Journey's End",
+    blurb: 'Restaurant and bar on Main Street in Bourbon, Indiana.',
+    stack: ['Vite', 'React'],
+    category: 'personal',
+    year: 2025,
+    code: 'https://github.com/dwang0816/journeys-end-website',
+  },
+  {
+    name: 'Pantry Tracker',
+    blurb: 'Keeps track of what is in the pantry and what is running low.',
+    stack: ['Next.js'],
+    category: 'personal',
+    year: 2024,
+    url: 'https://pantry-tracker-psi-nine.vercel.app',
+  },
+  {
+    name: 'This site',
+    blurb: 'dwang.in. One small bundle, no 3D globe anymore.',
+    stack: ['Vite', 'React', 'TypeScript'],
+    category: 'personal',
+    year: 2026,
+    code: 'https://github.com/dwang0816/dwang',
+  },
+
+  // ───────────────────────── Play ─────────────────────────
+  {
+    name: "We're Not Really Strangers",
+    blurb: 'Digital version of the conversation card game, with Original, Honest Dating, Relationship and Family editions.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'play',
+    year: 2026,
+    url: 'https://we-are-not-really-strangers.vercel.app',
+  },
+  {
+    name: 'How Deep Will You Go?',
+    blurb: 'Conversation card game for 2 to 8 players: 99 cards across three levels plus secret wildcards.',
+    stack: ['Next.js', 'Tailwind'],
+    category: 'play',
+    year: 2026,
+    url: 'https://how-deep-will-you-go-delta.vercel.app',
+  },
+  {
+    name: 'Loop Visualizer',
+    blurb: 'Full-screen WebGL audio visualizer that renders reactive tunnel effects.',
+    stack: ['Three.js', 'React Three Fiber'],
+    category: 'play',
+    year: 2026,
+    url: 'https://miraj-visualizer.vercel.app',
+  },
+  {
+    name: "The Beginner's Guide",
+    blurb: 'A drawing canvas inspired by the game of the same name. Sketch without a reason; there is an essay that goes with it.',
+    stack: ['Vite', 'React'],
+    category: 'play',
+    year: 2025,
+    url: 'https://the-beginners-guide.netlify.app',
+  },
+
+  // ───────────────────────── Earlier work ─────────────────────────
+  {
+    name: 'NYC Trees',
+    blurb: 'Map of New York City’s oldest trees, with details on each one.',
+    stack: ['React', 'Mapbox', 'Ruby on Rails'],
+    category: 'early',
+    year: 2023,
+    url: 'https://scintillating-pasca-0fd429.netlify.app',
+    code: 'https://github.com/dwang0816/Nyc-Trees-Frontend',
+  },
+  {
+    name: 'Stripeify',
+    blurb: 'Create playlists, listen, and vote on other people’s playlists. Built with Janet Mendez.',
+    stack: ['React', 'Ruby on Rails', 'PostgreSQL'],
+    category: 'early',
+    year: 2023,
+    code: 'https://github.com/dwang0816/Stripeify-Frontend',
+  },
+  {
+    name: 'Moodi Day',
+    blurb: 'A place to share art, video and plant-based remedies for relaxation and wellbeing.',
+    stack: ['React', 'Next.js'],
+    category: 'early',
+    year: 2022,
+    url: 'https://deploy--stunning-semolina-2fbfd2.netlify.app',
+  },
+  {
+    name: 'iWomanTV',
+    blurb: 'Media and community platform for women and minorities.',
+    stack: ['WordPress'],
+    category: 'early',
+    year: 2021,
+    url: 'https://www.iwoman.tv',
+  },
+];
+
+export function byCategory(category: Category): Project[] {
+  return projects.filter((p) => p.category === category).sort((a, b) => b.year - a.year);
+}
+
+export function featured(limit = 6): Project[] {
+  return projects.filter((p) => p.featured).sort((a, b) => b.year - a.year).slice(0, limit);
+}

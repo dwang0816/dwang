@@ -1,0 +1,44 @@
+/* Shared page scaffolding: every route is one measured column with a title. */
+.page {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 0;
+}
+
+.page-head {
+  max-width: var(--measure);
+  margin-bottom: 40px;
+}
+
+.page-head h1 {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+}
+
+.page-head p {
+  margin-top: 12px;
+  font-size: 1.05rem;
+  color: var(--ink-2);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose p + p {
+  margin-top: 1em;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  margin: 2.2em 0 0.6em;
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding-top: 36px;
+  }
+
+  .page-head {
+    margin-bottom: 28px;
+  }
+}

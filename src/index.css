@@ -1,82 +1,108 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
+/*
+ * Design tokens. One palette, two faces.
+ *
+ * The green is the one colour on the site: it marks what is interactive and
+ * what is current. Everything else is ink on paper so the work reads, not the
+ * chrome around it.
+ */
 :root {
-  font-family: 'Roboto', Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --paper: #ffffff;
+  --paper-2: #f4f6f3;
+  --rule: #dfe4dc;
+  --ink: #1a1a1a;
+  --ink-2: #4b4f49;
+  --ink-3: #7a7f78;
+  --felt: #1e5c3f;
+  --felt-2: #15452f;
+  --felt-tint: #e6efe9;
+  --red: #b8322b;
+
+  --serif: 'Newsreader', 'Iowan Old Style', 'Times New Roman', serif;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --measure: 64ch;
+  --wrap: 1120px;
+  --gutter: clamp(16px, 4vw, 40px);
 
   color-scheme: light;
-  color: #333;
-  background-color: #ffffff;
-
-  font-synthesis: none;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--paper);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
-a:hover {
-  color: #535bf2;
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--paper);
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
-  min-height: 100vh;
-  background-color: #ffffff;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--ink);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--felt);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+  text-decoration-color: color-mix(in srgb, var(--felt) 45%, transparent);
+  transition: text-decoration-color 120ms ease, color 120ms ease;
+}
+
+a:hover {
+  color: var(--felt-2);
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--felt);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #f9f9f9;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font: inherit;
+  color: inherit;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+::selection {
+  background: var(--felt-tint);
 }
 
-/* Force white background everywhere */
-html, body, #root {
-  background-color: #ffffff !important;
-  color: #333 !important;
-}
-
-* {
-  box-sizing: border-box;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

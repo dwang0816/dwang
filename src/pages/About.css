@@ -1,0 +1,67 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+}
+
+.about-grid .prose p {
+  font-size: 1.08rem;
+}
+
+.about-grid .prose h2 {
+  font-size: 1.35rem;
+  color: var(--felt);
+  margin-top: 2em;
+}
+
+.about-side h2 {
+  font-size: 1.35rem;
+  color: var(--felt);
+  margin-bottom: 12px;
+}
+
+.about-side h2 + ul + h2 {
+  margin-top: 36px;
+}
+
+.about-skills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.about-skills li {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--ink-2);
+}
+
+.about-certs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about-certs li {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.about-cert-issuer {
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
+
+@media (min-width: 900px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 64px;
+  }
+}

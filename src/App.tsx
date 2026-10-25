@@ -1,74 +1,44 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import Home from './components/Home';
-import Projects from './components/Projects';
-import Games from './components/Games';
-import About from './components/About';
-import Highlights from './components/Highlights';
-import GlobeContainer from './components/GlobeContainer';
-import './App.css';
+import { lazy, Suspense, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import Masthead from './layout/Masthead';
+import Footer from './layout/Footer';
+import Home from './pages/Home';
+import './layout/Page.css';
 
-const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const handleLinkClick = () => {
-    if (window.innerWidth <= 768) {
-      onClose();
-    }
-  };
+// Home ships in the main bundle because it is the landing page; the other
+// routes load the first time they are visited.
+const Projects = lazy(() => import('./pages/Projects'));
+const Writing = lazy(() => import('./pages/Writing'));
+const Play = lazy(() => import('./pages/Play'));
+const About = lazy(() => import('./pages/About'));
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
+export default function App() {
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div>
-        <div className="sidebar-title">Dennis<br/>Wang</div>
-        <div className="sidebar-subtitle">Full-Stack Software Engineer | Certified Scrum Master | ServiceNow Certified System Administrator | Cloud & AI Enthusiast | Driving Digital Transformation and Scalable Solutions.</div>
-        <nav>
-          <NavLink to="/" end onClick={handleLinkClick}>Home</NavLink>
-          <NavLink to="/highlights" onClick={handleLinkClick}>Highlights</NavLink>
-          <NavLink to="/about" onClick={handleLinkClick}>About</NavLink>
-          <NavLink to="/projects" onClick={handleLinkClick}>Projects</NavLink>
-          <NavLink to="/play" onClick={handleLinkClick}>Play</NavLink>
-          <a href="https://www.github.com/dwang0816/" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://www.linkedin.com/in/denniswang4/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </nav>
-        <GlobeContainer />
-      </div>
-    </aside>
-  );
-};
-
-const App: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
-  return (
-    <Router>
-      <div className="layout">
-        <button 
-          className="mobile-menu-button" 
-          onClick={toggleSidebar}
-          aria-label="Toggle menu"
-        >
-          {isSidebarOpen ? '✕' : '☰'}
-        </button>
-        <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-        <main className="main" onClick={closeSidebar}>
+    <BrowserRouter>
+      <ScrollToTop />
+      <Masthead />
+      <main>
+        <Suspense fallback={<div className="page" aria-busy="true" />}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/highlights" element={<Highlights />} />
             <Route path="/projects" element={<Projects />} />
-            <Route path="/play" element={<Games />} />
+            <Route path="/writing" element={<Writing />} />
+            <Route path="/play" element={<Play />} />
             <Route path="/about" element={<About />} />
+            <Route path="/highlights" element={<Home />} />
+            <Route path="*" element={<Home />} />
           </Routes>
-        </main>
-      </div>
-    </Router>
+        </Suspense>
+      </main>
+      <Footer />
+    </BrowserRouter>
   );
-};
-
-export default App;
+}
