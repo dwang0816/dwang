@@ -7,7 +7,7 @@ const total = projects.length;
 
 function matches(p: Project, q: string): boolean {
   if (!q) return true;
-  const hay = `${p.name} ${p.blurb} ${p.stack.join(' ')} ${p.year}`.toLowerCase();
+  const hay = `${p.name} ${p.blurb} ${p.stack.join(' ')} ${p.year} ${p.via ?? ''}`.toLowerCase();
   return q
     .toLowerCase()
     .split(/\s+/)

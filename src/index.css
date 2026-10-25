@@ -21,6 +21,9 @@
   --c-play: #2ed3c3;
   --c-template: #b48cf2;
   --c-early: #6fa8ff;
+  /* Within client work: built on the job vs taken on directly. */
+  --c-company: #d8b14a;
+  --c-contract: #f2975f;
   /* Links and the active state share the gold, which is the site's one accent. */
   --accent: var(--c-client);
 
@@ -157,6 +160,12 @@ input {
 }
 .tag-early {
   --tag: var(--c-early);
+}
+.tag-company {
+  --tag: var(--c-company);
+}
+.tag-contract {
+  --tag: var(--c-contract);
 }
 
 /* A bordered panel with a titled header. */

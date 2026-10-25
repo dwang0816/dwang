@@ -50,6 +50,11 @@
   color: var(--accent);
 }
 
+.ptable-via {
+  margin-left: 8px;
+  vertical-align: 2px;
+}
+
 .ptable-blurb {
   display: block;
   margin-top: 2px;

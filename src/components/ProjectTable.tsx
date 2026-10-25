@@ -1,4 +1,4 @@
-import { categories, type Project } from '../data/projects';
+import { categories, vias, type Project } from '../data/projects';
 import './ProjectTable.css';
 
 /**
@@ -40,6 +40,7 @@ export default function ProjectTable({
                 ) : (
                   p.name
                 )}
+                {p.via && <span className={`tag tag-${p.via} ptable-via`}>{vias[p.via].title}</span>}
               </span>
               <span className="ptable-blurb">{p.blurb}</span>
             </td>
