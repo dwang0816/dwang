@@ -6,7 +6,7 @@
  * `url` is only set when the link was checked and resolves; internal tools and
  * client sites behind a login say so instead of linking to a login page.
  */
-export type Category = 'client' | 'personal' | 'play' | 'early';
+export type Category = 'client' | 'personal' | 'play' | 'template' | 'early';
 
 export interface Project {
   name: string;
@@ -23,28 +23,35 @@ export interface Project {
   featured?: boolean;
 }
 
-export const categories: Record<Category, { title: string; blurb: string }> = {
+export const categories: Record<Category, { title: string; blurb: string; color: string }> = {
   client: {
     title: 'Client work',
-    blurb:
-      'Built at Split Road Media for businesses, nonprofits and towns across northern Indiana. Most are marketing sites; a few are stores, league trackers and internal tools.',
+    blurb: 'Sites, stores and tools built for clients: small businesses, nonprofits and towns, most of them in northern Indiana.',
+    color: 'var(--c-client)',
   },
   personal: {
     title: 'Personal projects',
-    blurb:
-      'Things I built on my own time: trackers for mahjong and trading cards, sites for friends and family, and tools that scratch an itch.',
+    blurb: 'Built on my own time: trackers for mahjong and trading cards, dashboards, and tools that scratch an itch.',
+    color: 'var(--c-personal)',
   },
   play: {
     title: 'Play',
     blurb: 'Interactive experiments and games. Open one and try it.',
+    color: 'var(--c-play)',
+  },
+  template: {
+    title: 'Templates',
+    blurb: 'Started for clients and never finished. Kept as starting points for the next one.',
+    color: 'var(--c-template)',
   },
   early: {
     title: 'Earlier work',
-    blurb: 'Full-stack projects from 2021 to 2023, around the time I moved into software from the service desk.',
+    blurb: 'Full-stack projects from 2021 to 2023, from around the time I moved into software.',
+    color: 'var(--c-early)',
   },
 };
 
-export const categoryOrder: Category[] = ['client', 'personal', 'play', 'early'];
+export const categoryOrder: Category[] = ['client', 'personal', 'play', 'template', 'early'];
 
 export const projects: Project[] = [
   // ───────────────────────── Client work ─────────────────────────
@@ -116,8 +123,8 @@ export const projects: Project[] = [
     url: 'https://www.ripemall.com',
   },
   {
-    name: 'Split Road Media Quote Generator',
-    blurb: 'Internal dashboard for quoting print, design, web and media work: builds PDFs and emails them to accounting and clients.',
+    name: 'Quote generator',
+    blurb: 'Internal dashboard for an agency to quote print, design, web and media work: builds PDFs and emails them to accounting and the client.',
     stack: ['Next.js', 'Postgres', 'Stripe'],
     category: 'client',
     year: 2026,
@@ -132,8 +139,8 @@ export const projects: Project[] = [
     access: 'Private',
   },
   {
-    name: 'Split Road Media Shops',
-    blurb: 'Hub that hosts the online stores built for clients, starting with a church merch store.',
+    name: 'Client store hub',
+    blurb: 'One deployment that hosts several small client stores, starting with a church merch shop.',
     stack: ['Next.js', 'Tailwind', 'Stripe'],
     category: 'client',
     year: 2026,
@@ -244,8 +251,8 @@ export const projects: Project[] = [
     url: 'https://www.constmfg.com',
   },
   {
-    name: 'Split Road Media ClientPay',
-    blurb: 'Portal where agency clients pay invoices online by ACH or card.',
+    name: 'Client invoice portal',
+    blurb: 'Where an agency’s clients pay invoices online by ACH or card.',
     stack: ['Next.js', 'Stripe'],
     category: 'client',
     year: 2026,
@@ -301,7 +308,7 @@ export const projects: Project[] = [
   },
   {
     name: 'Split Road Media',
-    blurb: 'The agency site: web, photography, video, graphics and print.',
+    blurb: 'Media agency: web, photography, video, graphics and print.',
     stack: ['WordPress'],
     category: 'client',
     year: 2025,
@@ -383,7 +390,7 @@ export const projects: Project[] = [
     name: 'Pure Play Mahjong',
     blurb: 'Classes in traditional Chinese mahjong, played without reference cards or yearly rule changes.',
     stack: ['Next.js', 'Tailwind'],
-    category: 'personal',
+    category: 'client',
     year: 2026,
     url: 'https://www.pureplaymahjong.com',
   },
@@ -416,7 +423,7 @@ export const projects: Project[] = [
     name: 'East Side Stories',
     blurb: 'Documentary films, video series and community events centered on Asian American stories.',
     stack: ['Next.js', 'Tailwind'],
-    category: 'personal',
+    category: 'client',
     year: 2026,
     url: 'https://www.eastsidestories.org',
   },
@@ -424,23 +431,23 @@ export const projects: Project[] = [
     name: 'Bears by Brit',
     blurb: 'Handmade resin art shop that also books crafting events: moms’ nights, fundraisers, birthday parties.',
     stack: ['Next.js', 'Tailwind'],
-    category: 'personal',
+    category: 'client',
     year: 2026,
     url: 'https://www.bearsbybrit.com',
   },
   {
-    name: 'QSpace Crafter',
-    blurb: 'Family-owned construction company serving NYC and Long Island: bathroom, kitchen, full-home and exterior remodels.',
+    name: 'Interior designer template',
+    blurb: 'Remodeling and interior design site: services, project gallery, quote request. Started for a NYC contractor.',
     stack: ['Next.js', 'Tailwind'],
-    category: 'personal',
+    category: 'template',
     year: 2026,
     url: 'https://qspacecrafter.vercel.app',
   },
   {
-    name: 'Constantly Create',
-    blurb: 'Custom apparel printer: screen printing, embroidery, DTG, DTF gang sheets and patches, with a quote flow.',
+    name: 'Print shop template',
+    blurb: 'Custom apparel printer site: screen printing, embroidery, DTF gang sheets and patches, with a quote flow and checkout.',
     stack: ['Next.js', 'Tailwind', 'Stripe'],
-    category: 'personal',
+    category: 'template',
     year: 2026,
     url: 'https://constantlycreateshop.vercel.app',
   },
@@ -502,7 +509,7 @@ export const projects: Project[] = [
   },
   {
     name: 'This site',
-    blurb: 'dwang.in. One small bundle, no 3D globe anymore.',
+    blurb: 'dwang.in, the page you are reading.',
     stack: ['Vite', 'React', 'TypeScript'],
     category: 'personal',
     year: 2026,

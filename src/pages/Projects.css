@@ -7,105 +7,90 @@
   white-space: nowrap;
 }
 
-.projects-controls {
+.pfilters {
   position: sticky;
-  top: 53px; /* under the masthead */
+  top: 52px; /* under the masthead */
   z-index: 10;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 24px;
-  padding: 12px 0;
-  margin-bottom: 24px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--rule);
+  gap: 10px 16px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
 }
 
-.projects-search input {
-  width: min(100%, 320px);
-  padding: 8px 12px;
-  font: inherit;
-  font-size: 0.95rem;
+.pfilters-search input {
+  width: min(100%, 280px);
+  padding: 6px 10px;
+  font-size: 0.9rem;
   color: var(--ink);
-  background: var(--paper-2);
-  border: 1px solid var(--rule);
+  background: var(--graphite);
+  border: 1px solid var(--edge-hi);
   border-radius: 6px;
 }
 
-.projects-search input:focus {
-  outline: 2px solid var(--felt);
-  outline-offset: 1px;
-  background: var(--paper);
+.pfilters-search input::placeholder {
+  color: var(--ink-faint);
 }
 
-.projects-jump {
+.pfilters-search input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.pfilters-groups {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 18px;
-}
-
-.projects-jump a {
-  color: var(--ink-2);
-  text-decoration: none;
-  font-size: 0.95rem;
-  display: inline-flex;
-  align-items: baseline;
   gap: 6px;
 }
 
-.projects-jump a:hover {
-  color: var(--felt);
+/* Same geometry as .tag, but a button; lit in its group colour when selected. */
+.pfilter {
+  --tag: var(--ink-dim);
+  cursor: pointer;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--tag);
+  background: transparent;
+  border: 1px solid var(--edge-hi);
 }
 
-.projects-jump a.is-empty {
-  color: var(--ink-3);
-  pointer-events: none;
+.pfilter .mono {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-left: 2px;
 }
 
-.projects-jump-count {
-  font-size: 0.8rem;
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
+.pfilter:hover {
+  border-color: color-mix(in srgb, var(--tag) 50%, transparent);
 }
 
-.projects-empty {
-  color: var(--ink-2);
-  padding: 32px 0;
+.pfilter.is-on {
+  background: color-mix(in srgb, var(--tag) 16%, transparent);
+  border-color: color-mix(in srgb, var(--tag) 45%, transparent);
 }
 
-/* Each group: a sticky heading column beside the list on wide screens. */
-.projects-group {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 20px 48px;
-  padding-top: 32px;
-  scroll-margin-top: 120px;
+.pfilter.is-on:not([class*='pfilter-']) {
+  --tag: var(--ink);
 }
 
-.projects-group + .projects-group {
-  margin-top: 40px;
+.pempty {
+  color: var(--ink-dim);
+  padding: 32px 4px;
 }
 
-.projects-group-head h2 {
-  font-size: 1.75rem;
-  color: var(--felt);
+.pgroup + .pgroup {
+  margin-top: 16px;
 }
 
-.projects-group-head p {
-  margin-top: 8px;
-  color: var(--ink-2);
-  max-width: 40ch;
-  font-size: 0.98rem;
+.pgroup {
+  scroll-margin-top: 110px;
 }
 
-@media (min-width: 900px) {
-  .projects-group {
-    grid-template-columns: 260px minmax(0, 1fr);
-  }
-
-  .projects-group-head {
-    position: sticky;
-    top: 130px;
-    align-self: start;
+@media (max-width: 720px) {
+  .pfilters {
+    position: static;
   }
 }

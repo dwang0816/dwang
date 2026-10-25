@@ -1,35 +1,42 @@
 /*
- * Design tokens. One palette, two faces.
- *
- * The green is the one colour on the site: it marks what is interactive and
- * what is current. Everything else is ink on paper so the work reads, not the
- * chrome around it.
+ * Design tokens. Same family as TCG Forecast and Chasing Grails: graphite
+ * surfaces, one-pixel edges, mono micro-labels, and one colour per kind of
+ * thing so a row can be read without reading it.
  */
 :root {
-  --paper: #ffffff;
-  --paper-2: #f4f6f3;
-  --rule: #dfe4dc;
-  --ink: #1a1a1a;
-  --ink-2: #4b4f49;
-  --ink-3: #7a7f78;
-  --felt: #1e5c3f;
-  --felt-2: #15452f;
-  --felt-tint: #e6efe9;
-  --red: #b8322b;
+  /* Surfaces, darkest to lightest. */
+  --graphite: #0c0c10;
+  --panel: #141419;
+  --panel-hi: #191921;
+  --edge: #26262e;
+  --edge-hi: #34343e;
 
-  --serif: 'Newsreader', 'Iowan Old Style', 'Times New Roman', serif;
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ink: #f4f4f6;
+  --ink-dim: #b4b6c2;
+  --ink-faint: #80838f;
 
-  --measure: 64ch;
-  --wrap: 1120px;
-  --gutter: clamp(16px, 4vw, 40px);
+  /* One colour per project group. Text-safe on graphite at small sizes. */
+  --c-client: #e9c45c;
+  --c-personal: #5fd48a;
+  --c-play: #2ed3c3;
+  --c-template: #b48cf2;
+  --c-early: #6fa8ff;
+  /* Links and the active state share the gold, which is the site's one accent. */
+  --accent: var(--c-client);
 
-  color-scheme: light;
+  --sans: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  --wrap: 1180px;
+  --gutter: clamp(14px, 3vw, 32px);
+  --radius: 8px;
+
+  color-scheme: dark;
   font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.5;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--graphite);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -45,21 +52,33 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background: var(--paper);
+  background: var(--graphite);
 }
 
 body {
   min-width: 320px;
 }
 
+/* The terminal grid from the TCG Forecast banner, faded out before the footer. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, #16161c 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(90deg, #16161c 0 1px, transparent 1px 44px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 90%);
+}
+
 h1,
 h2,
 h3,
 h4 {
-  font-family: var(--serif);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.01em;
-  line-height: 1.15;
+  line-height: 1.2;
   margin: 0;
   color: var(--ink);
 }
@@ -69,32 +88,104 @@ p {
 }
 
 a {
-  color: var(--felt);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
-  text-decoration-color: color-mix(in srgb, var(--felt) 45%, transparent);
-  transition: text-decoration-color 120ms ease, color 120ms ease;
+  color: var(--accent);
+  text-decoration: none;
 }
 
 a:hover {
-  color: var(--felt-2);
-  text-decoration-color: currentColor;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 :focus-visible {
-  outline: 2px solid var(--felt);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
 }
 
-button {
+button,
+input {
   font: inherit;
   color: inherit;
 }
 
 ::selection {
-  background: var(--felt-tint);
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* Shared primitives */
+
+.kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Coloured pill. Set --tag to the group colour; falls back to neutral. */
+.tag {
+  --tag: var(--ink-faint);
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: nowrap;
+  color: var(--tag);
+  background: color-mix(in srgb, var(--tag) 13%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tag) 32%, transparent);
+}
+
+.tag-client {
+  --tag: var(--c-client);
+}
+.tag-personal {
+  --tag: var(--c-personal);
+}
+.tag-play {
+  --tag: var(--c-play);
+}
+.tag-template {
+  --tag: var(--c-template);
+}
+.tag-early {
+  --tag: var(--c-early);
+}
+
+/* A bordered panel with a titled header. */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--edge);
+  /* Group colour shows as a 2px rule along the top of the panel. */
+  box-shadow: inset 0 2px 0 var(--panel-accent, var(--edge-hi));
+}
+
+.panel-head h2 {
+  font-size: 1.05rem;
+}
+
+.panel-head p {
+  flex-basis: 100%;
+  color: var(--ink-dim);
+  font-size: 0.9rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

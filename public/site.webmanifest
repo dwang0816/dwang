@@ -28,8 +28,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#232323",
-  "background_color": "#ffffff",
+  "theme_color": "#0c0c10",
+  "background_color": "#0c0c10",
   "display": "standalone",
   "start_url": "/",
   "description": "Full-Stack Software Engineer specializing in modern web development, AI solutions, and digital transformation."

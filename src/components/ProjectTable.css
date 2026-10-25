@@ -1,0 +1,150 @@
+.ptable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.ptable th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-faint);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--edge);
+  background: var(--panel-hi);
+}
+
+.ptable td {
+  padding: 10px 16px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--edge);
+}
+
+.ptable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ptable tbody tr:hover td {
+  background: var(--panel-hi);
+}
+
+.ptable-main {
+  min-width: 0;
+}
+
+.ptable-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.ptable-name a {
+  color: var(--ink);
+}
+
+.ptable-name a:hover {
+  color: var(--accent);
+}
+
+.ptable-blurb {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  max-width: 60ch;
+}
+
+.ptable-stack {
+  white-space: normal;
+}
+
+.ptable-stack .tag {
+  margin: 0 4px 4px 0;
+}
+
+.ptable-year {
+  font-size: 12px;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+
+.ptable-open {
+  white-space: nowrap;
+}
+
+.ptable-link {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--accent);
+  margin-right: 6px;
+}
+
+.ptable-link:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  text-decoration: none;
+}
+
+.ptable-access {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* Narrow screens: each row becomes a stacked card. */
+@media (max-width: 720px) {
+  .ptable thead {
+    display: none;
+  }
+
+  .ptable,
+  .ptable tbody,
+  .ptable tr,
+  .ptable td {
+    display: block;
+  }
+
+  .ptable tr {
+    padding: 10px 14px 12px;
+    border-bottom: 1px solid var(--edge);
+  }
+
+  .ptable tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .ptable td {
+    padding: 0;
+    border: 0;
+  }
+
+  .ptable tbody tr:hover td {
+    background: transparent;
+  }
+
+  .ptable-group,
+  .ptable-stack {
+    margin-top: 8px;
+  }
+
+  .ptable td.ptable-year {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+
+  .ptable td.ptable-open {
+    display: inline-block;
+    margin-top: 8px;
+    vertical-align: middle;
+  }
+}

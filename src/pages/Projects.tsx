@@ -1,6 +1,6 @@
 import { useDeferredValue, useMemo, useState } from 'react';
 import { byCategory, categories, categoryOrder, projects, type Category, type Project } from '../data/projects';
-import ProjectList from '../components/ProjectList';
+import ProjectTable from '../components/ProjectTable';
 import './Projects.css';
 
 const total = projects.length;
@@ -17,6 +17,7 @@ function matches(p: Project, q: string): boolean {
 
 export default function Projects() {
   const [query, setQuery] = useState('');
+  const [only, setOnly] = useState<Category | null>(null);
   const q = useDeferredValue(query.trim());
 
   const groups = useMemo(
@@ -24,23 +25,26 @@ export default function Projects() {
       categoryOrder.map((key) => ({
         key,
         ...categories[key],
+        all: byCategory(key).length,
         items: byCategory(key).filter((p) => matches(p, q)),
       })),
     [q],
   );
-  const shown = groups.reduce((n, g) => n + g.items.length, 0);
+  const visible = groups.filter((g) => (only ? g.key === only : true));
+  const shown = visible.reduce((n, g) => n + g.items.length, 0);
 
   return (
     <div className="page">
       <div className="page-head">
         <h1>Projects</h1>
-        <p>
-          {total} sites and apps, grouped by who they were for. Newest first within each group.
-        </p>
+        <span className="kicker">
+          {shown} of {total}
+        </span>
+        <p>Everything shipped, grouped by who it was for. Newest first within each group.</p>
       </div>
 
-      <div className="projects-controls">
-        <label className="projects-search">
+      <div className="pfilters panel">
+        <label className="pfilters-search">
           <span className="visually-hidden">Filter projects</span>
           <input
             type="search"
@@ -50,29 +54,51 @@ export default function Projects() {
             autoComplete="off"
           />
         </label>
-        <nav className="projects-jump" aria-label="Project groups">
+        <div className="pfilters-groups" role="group" aria-label="Show one group">
+          <button
+            type="button"
+            className={`pfilter ${only === null ? 'is-on' : ''}`}
+            onClick={() => setOnly(null)}
+          >
+            All <span className="mono">{total}</span>
+          </button>
           {groups.map((g) => (
-            <a key={g.key} href={`#${g.key}`} className={g.items.length === 0 ? 'is-empty' : ''}>
-              {g.title}
-              <span className="projects-jump-count">{g.items.length}</span>
-            </a>
+            <button
+              key={g.key}
+              type="button"
+              className={`pfilter pfilter-${g.key} ${only === g.key ? 'is-on' : ''}`}
+              style={{ '--tag': g.color } as React.CSSProperties}
+              onClick={() => setOnly(only === g.key ? null : g.key)}
+              aria-pressed={only === g.key}
+            >
+              {g.title} <span className="mono">{q ? `${g.items.length}/${g.all}` : g.all}</span>
+            </button>
           ))}
-        </nav>
+        </div>
       </div>
 
       {shown === 0 ? (
-        <p className="projects-empty">
-          Nothing matches “{q}”. Try a shorter word, a technology like Next.js, or a year.
+        <p className="pempty">
+          Nothing matches “{q}”{only ? ` in ${categories[only].title}` : ''}. Try a shorter word,
+          a technology like Next.js, or a year.
         </p>
       ) : (
-        groups.map((g) =>
+        visible.map((g) =>
           g.items.length === 0 ? null : (
-            <section key={g.key} id={g.key} className="projects-group">
-              <div className="projects-group-head">
-                <h2>{g.title}</h2>
+            <section
+              key={g.key}
+              id={g.key}
+              className="panel pgroup"
+              style={{ '--panel-accent': g.color } as React.CSSProperties}
+            >
+              <div className="panel-head">
+                <h2 style={{ color: g.color }}>{g.title}</h2>
+                <span className="kicker">
+                  {g.items.length === g.all ? g.all : `${g.items.length} of ${g.all}`}
+                </span>
                 <p>{g.blurb}</p>
               </div>
-              <ProjectList items={g.items} />
+              <ProjectTable items={g.items} />
             </section>
           ),
         )
@@ -80,5 +106,3 @@ export default function Projects() {
     </div>
   );
 }
-
-export type { Category };
