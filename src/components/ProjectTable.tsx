@@ -21,7 +21,7 @@ export default function ProjectTable({
           {showGroup && <th scope="col">Group</th>}
           <th scope="col">Stack</th>
           <th scope="col" className="ptable-year">
-            Year
+            Started
           </th>
           <th scope="col" className="ptable-open">
             Open

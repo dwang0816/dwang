@@ -2,7 +2,7 @@
  * Every project, in one place.
  *
  * `category` is who the work was for, which is how the Projects page groups it.
- * `year` is when the project last had real work, so each group reads newest first.
+ * `year` is when the project was started, so each group reads newest first.
  * `url` is only set when the link was checked and resolves; internal tools and
  * client sites behind a login say so instead of linking to a login page.
  */
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind', 'Stripe'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     url: 'https://www.presspeels.com',
   },
   {
@@ -99,7 +99,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     url: 'https://www.madehere.events',
   },
   {
@@ -118,7 +118,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     url: 'https://www.mikestrashllc.com',
   },
   {
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Postgres', 'Stripe'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     access: 'Internal tool',
   },
   {
@@ -208,7 +208,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind'],
     category: 'client',
     via: 'contract',
-    year: 2026,
+    year: 2025,
     url: 'https://ruthlessbar.com',
   },
   {
@@ -262,7 +262,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     url: 'https://www.fultonedc.com',
   },
   {
@@ -280,7 +280,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     url: 'https://www.constmfg.com',
   },
   {
@@ -289,7 +289,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Stripe'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     access: 'Internal tool',
   },
   {
@@ -298,7 +298,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind', 'Stripe'],
     category: 'client',
     via: 'company',
-    year: 2026,
+    year: 2025,
     access: 'Private',
   },
   {
@@ -442,15 +442,6 @@ export const projects: Project[] = [
     url: 'https://www.pureplaymahjong.com',
   },
   {
-    name: 'Crystal Cho, product designer',
-    blurb: 'Portfolio with case studies, an about page and blog posts.',
-    stack: ['Vite', 'React', 'Tailwind'],
-    category: 'client',
-    via: 'contract',
-    year: 2026,
-    url: 'https://www.crystal-cho.com',
-  },
-  {
     name: 'Free Finds',
     blurb: 'Dashboard of free Facebook Marketplace listings near Flushing, filled by an hourly scraper with estimated eBay resale values.',
     stack: ['Next.js', 'Playwright', 'Postgres'],
@@ -473,7 +464,7 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Tailwind'],
     category: 'client',
     via: 'contract',
-    year: 2026,
+    year: 2025,
     url: 'https://www.eastsidestories.org',
   },
   {
@@ -563,7 +554,7 @@ export const projects: Project[] = [
     blurb: 'dwang.in, the page you are reading.',
     stack: ['Vite', 'React', 'TypeScript'],
     category: 'personal',
-    year: 2026,
+    year: 2021,
     code: 'https://github.com/dwang0816/dwang',
   },
 
@@ -607,7 +598,7 @@ export const projects: Project[] = [
     blurb: 'Map of New York City’s oldest trees, with details on each one.',
     stack: ['React', 'Mapbox', 'Ruby on Rails'],
     category: 'early',
-    year: 2023,
+    year: 2019,
     url: 'https://scintillating-pasca-0fd429.netlify.app',
     code: 'https://github.com/dwang0816/Nyc-Trees-Frontend',
   },
@@ -616,7 +607,7 @@ export const projects: Project[] = [
     blurb: 'Create playlists, listen, and vote on other people’s playlists. Built with Janet Mendez.',
     stack: ['React', 'Ruby on Rails', 'PostgreSQL'],
     category: 'early',
-    year: 2023,
+    year: 2019,
     code: 'https://github.com/dwang0816/Stripeify-Frontend',
   },
   {

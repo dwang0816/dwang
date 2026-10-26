@@ -1,5 +1,5 @@
 import { useDeferredValue, useMemo, useState } from 'react';
-import { byCategory, categories, categoryOrder, projects, type Category, type Project } from '../data/projects';
+import { byCategory, categories, categoryOrder, projects, vias, type Category, type Project, type Via } from '../data/projects';
 import ProjectTable from '../components/ProjectTable';
 import './Projects.css';
 
@@ -18,6 +18,7 @@ function matches(p: Project, q: string): boolean {
 export default function Projects() {
   const [query, setQuery] = useState('');
   const [only, setOnly] = useState<Category | null>(null);
+  const [via, setVia] = useState<Via | null>(null);
   const q = useDeferredValue(query.trim());
 
   const groups = useMemo(
@@ -26,9 +27,9 @@ export default function Projects() {
         key,
         ...categories[key],
         all: byCategory(key).length,
-        items: byCategory(key).filter((p) => matches(p, q)),
+        items: byCategory(key).filter((p) => matches(p, q) && (!via || p.via === via)),
       })),
-    [q],
+    [q, via],
   );
   const visible = groups.filter((g) => (only ? g.key === only : true));
   const shown = visible.reduce((n, g) => n + g.items.length, 0);
@@ -71,7 +72,22 @@ export default function Projects() {
               onClick={() => setOnly(only === g.key ? null : g.key)}
               aria-pressed={only === g.key}
             >
-              {g.title} <span className="mono">{q ? `${g.items.length}/${g.all}` : g.all}</span>
+              {g.title} <span className="mono">{q || via ? `${g.items.length}/${g.all}` : g.all}</span>
+            </button>
+          ))}
+        </div>
+        <div className="pfilters-groups" role="group" aria-label="Client work by arrangement">
+          {(Object.keys(vias) as Via[]).map((v) => (
+            <button
+              key={v}
+              type="button"
+              className={`pfilter pfilter-${v} ${via === v ? 'is-on' : ''}`}
+              style={{ '--tag': vias[v].color } as React.CSSProperties}
+              onClick={() => setVia(via === v ? null : v)}
+              aria-pressed={via === v}
+            >
+              {vias[v].title}{' '}
+              <span className="mono">{projects.filter((p) => p.via === v).length}</span>
             </button>
           ))}
         </div>
@@ -79,8 +95,9 @@ export default function Projects() {
 
       {shown === 0 ? (
         <p className="pempty">
-          Nothing matches “{q}”{only ? ` in ${categories[only].title}` : ''}. Try a shorter word,
-          a technology like Next.js, or a year.
+          Nothing matches{q ? ` “${q}”` : ''}{only ? ` in ${categories[only].title}` : ''}
+          {via ? ` for ${vias[via].title.toLowerCase()} work` : ''}. Try a shorter word, a technology
+          like Next.js, or a year.
         </p>
       ) : (
         visible.map((g) =>
