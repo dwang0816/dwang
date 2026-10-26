@@ -121,15 +121,20 @@ function makeLayer(w: number, h: number, depth: number, perPx: number, liveShare
   return { depth, canvas, live, drift: 0 };
 }
 
-/** The dust band: many soft blobs along a diagonal, rendered small and scaled up. */
+/**
+ * The dust band: many soft blobs along a diagonal. Rendered once at device
+ * resolution; a scaled-up low-res version shows the browser's gradient dither
+ * as a checker pattern, so no shortcuts here.
+ */
 function makeDust(w: number, h: number): HTMLCanvasElement {
-  const scale = 0.25;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const canvas = document.createElement('canvas');
-  canvas.width = Math.max(1, Math.floor(w * scale));
-  canvas.height = Math.max(1, Math.floor(h * scale));
+  canvas.width = Math.max(1, Math.floor(w * dpr));
+  canvas.height = Math.max(1, Math.floor(h * dpr));
   const ctx = canvas.getContext('2d')!;
-  const cw = canvas.width;
-  const ch = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cw = w;
+  const ch = h;
   const tints: RGB[] = [
     [120, 150, 220],
     [46, 211, 195],
