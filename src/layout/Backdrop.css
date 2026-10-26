@@ -1,0 +1,25 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.backdrop-blob {
+  --blob: var(--ink-faint);
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, var(--blob) 0%, transparent 68%);
+  opacity: 0.8;
+  /* Low enough that text on panels is never affected; the panels are opaque. */
+  mix-blend-mode: screen;
+  filter: saturate(0.9);
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%);
+}
+
+/* The gradient's full strength is too loud; scale the whole layer down. */
+.backdrop {
+  opacity: 0.3;
+}

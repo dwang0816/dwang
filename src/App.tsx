@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Masthead from './layout/Masthead';
 import Footer from './layout/Footer';
@@ -12,6 +12,9 @@ const Writing = lazy(() => import('./pages/Writing'));
 const Play = lazy(() => import('./pages/Play'));
 const About = lazy(() => import('./pages/About'));
 
+// Decoration waits until the page is idle, so it never delays the content.
+const Backdrop = lazy(() => import('./layout/Backdrop'));
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -20,10 +23,30 @@ function ScrollToTop() {
   return null;
 }
 
+function useIdle(): boolean {
+  const [idle, setIdle] = useState(false);
+  useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    if (w.requestIdleCallback) {
+      w.requestIdleCallback(() => setIdle(true));
+    } else {
+      const t = setTimeout(() => setIdle(true), 600);
+      return () => clearTimeout(t);
+    }
+  }, []);
+  return idle;
+}
+
 export default function App() {
+  const idle = useIdle();
   return (
     <BrowserRouter>
       <ScrollToTop />
+      {idle && (
+        <Suspense fallback={null}>
+          <Backdrop />
+        </Suspense>
+      )}
       <Masthead />
       <main>
         <Suspense fallback={<div className="page" aria-busy="true" />}>
