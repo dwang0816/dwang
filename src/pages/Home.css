@@ -70,63 +70,43 @@
   --tag: var(--ink);
 }
 
-/* Section label row above a group of panels */
-.home-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 14px;
-  margin: 0 2px 10px;
-}
-
-.home-row-note {
-  color: var(--ink-dim);
-  font-size: 0.9rem;
-}
-
-/* The two latest projects, side by side */
-.home-features {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
+/* Latest: two projects in one panel */
+.home-latest {
   margin-bottom: 16px;
 }
 
-.home-feature {
-  display: flex;
-  flex-direction: column;
+.home-latest-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
 }
 
-.home-feature .panel-head h2 a {
+.home-latest-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 16px;
+}
+
+.home-latest-item + .home-latest-item {
+  border-top: 1px solid var(--edge);
+}
+
+.home-latest-item h3 {
+  font-size: 1.05rem;
+}
+
+.home-latest-item h3 a {
   color: var(--ink);
 }
 
-.home-feature .panel-head h2 a:hover {
+.home-latest-item h3 a:hover {
   color: var(--accent);
 }
 
-.home-feature-body {
-  flex: 1;
-  padding: 14px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.home-feature-what {
-  color: var(--ink);
-  font-size: 0.95rem;
-}
-
-.home-feature-kicker {
-  margin-top: 4px;
-}
-
-.home-feature-why {
+.home-latest-item p {
   color: var(--ink-dim);
   font-size: 0.92rem;
-  border-left: 2px solid color-mix(in srgb, var(--c-personal) 50%, transparent);
-  padding-left: 12px;
+  max-width: 52ch;
 }
 
 .home-feature-foot {
@@ -136,7 +116,7 @@
   justify-content: space-between;
   gap: 8px;
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .home-feature-stack {
@@ -242,8 +222,13 @@
 }
 
 @media (min-width: 760px) {
-  .home-features {
+  .home-latest-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-latest-item + .home-latest-item {
+    border-top: 0;
+    border-left: 1px solid var(--edge);
   }
 
   .home-guide {

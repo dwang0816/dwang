@@ -11,17 +11,15 @@ const latest = [
     name: 'Chasing Grails',
     url: 'https://chasing-grails.vercel.app',
     code: 'https://github.com/dwang0816/chasing-grails',
-    stack: ['HTML', 'JSON', 'scheduled scan'],
-    what: 'One page that answers one question: where can I actually get trading-card product this week? Official drops, Pokémon Center and Premium Bandai windows, big-box restocks, game-store finds, conventions and card shows, rescanned twice a day and published as plain JSON so the page costs nothing to run.',
-    why: 'I collect One Piece and Pokémon, and I was tired of piecing this together from Discord, X and store apps every week. It is also the first thing I built that runs without me: a scheduled scan writes the data, a push redeploys the page, and I read it like everyone else.',
+    stack: ['HTML', 'JSON'],
+    what: 'Where to find trading-card product this week: drops, restocks, drawings, conventions and card shows. Rescanned twice a day.',
   },
   {
     name: 'TCG Forecast',
     url: 'https://tcg-forecast.vercel.app',
     code: 'https://github.com/dwang0816/tcg-forecast',
-    stack: ['Next.js', 'Postgres', 'Drizzle'],
-    what: 'Price tracker for Pokémon, One Piece and Riftbound. It ingests TCGplayer market prices every day, ranks the biggest risers and fallers, and scores each move by how much to trust it: do sellers agree on the price, is a swing that size normal for the card, and is a stale price just catching up.',
-    why: 'Card prices move on hype, and the raw percentage lies more often than it tells the truth. I wanted a number I could defend. Working out that score taught me more about presenting data honestly than any client site has: every figure on a tile has to earn its place and explain itself.',
+    stack: ['Next.js', 'Postgres'],
+    what: 'Daily price movers for Pokémon, One Piece and Riftbound cards, with a score for how much to trust each move.',
   },
 ];
 
@@ -32,7 +30,7 @@ export default function Home() {
     <div className="page home">
       <section className="home-hero panel">
         <div className="home-hero-text">
-          <span className="kicker">Dennis Wang · software engineer · Indiana</span>
+          <span className="kicker">Dennis Wang · software engineer · New York City</span>
           <h1>I build websites and tools.</h1>
           <p>
             Websites for clients: small businesses, nonprofits and towns. Tools for myself, around
@@ -58,29 +56,23 @@ export default function Home() {
         </ul>
       </section>
 
-      <div className="home-row">
-        <span className="kicker">Latest</span>
-        <span className="home-row-note">Two tools for the hobby that eats most of my weekends.</span>
-      </div>
-      <div className="home-features">
-        {latest.map((f) => (
-          <article
-            key={f.name}
-            className="panel home-feature"
-            style={{ '--panel-accent': 'var(--c-personal)' } as React.CSSProperties}
-          >
-            <div className="panel-head">
-              <h2>
+      <section
+        className="panel home-latest"
+        style={{ '--panel-accent': 'var(--c-personal)' } as React.CSSProperties}
+      >
+        <div className="panel-head">
+          <h2>Latest</h2>
+          <span className="kicker">trading cards</span>
+        </div>
+        <div className="home-latest-grid">
+          {latest.map((f) => (
+            <article key={f.name} className="home-latest-item">
+              <h3>
                 <a href={f.url} target="_blank" rel="noopener noreferrer">
                   {f.name}
                 </a>
-              </h2>
-              <span className="tag tag-personal">Personal</span>
-            </div>
-            <div className="home-feature-body">
-              <p className="home-feature-what">{f.what}</p>
-              <p className="kicker home-feature-kicker">Why it matters to me</p>
-              <p className="home-feature-why">{f.why}</p>
+              </h3>
+              <p>{f.what}</p>
               <div className="home-feature-foot">
                 <span className="home-feature-stack">
                   {f.stack.map((s) => (
@@ -98,10 +90,10 @@ export default function Home() {
                   </a>
                 </span>
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section
         className="panel home-guide"
@@ -132,15 +124,8 @@ export default function Home() {
           </div>
           <div className="home-guide-body">
             <p>
-              <em>The Beginner’s Guide</em> is a short game about someone who makes things with no
-              audience in mind. I wrote an essay about what it says about creative paralysis, and
-              built the smallest thing I could to go with it: a canvas, one colour, one brush size,
-              Clear and Save. That is the whole app.
-            </p>
-            <p>
-              The simplicity is the point. There is no account, no feed, nothing to optimise, so the
-              engineering brain has nothing to do except notice the itch to add something, and sit
-              with it. Draw, or don’t.
+              A canvas, one colour, one brush size, Clear and Save. Built alongside an essay on
+              creating without a reason. The simplicity is the point.
             </p>
             <div className="home-feature-foot">
               <span className="home-feature-links">
@@ -149,6 +134,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ptable-link"
+                  style={{ '--link': 'var(--c-template)' } as React.CSSProperties}
                 >
                   Read the essay
                 </a>
@@ -157,6 +143,7 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ptable-link"
+                  style={{ '--link': 'var(--c-play)' } as React.CSSProperties}
                 >
                   Open the canvas
                 </a>

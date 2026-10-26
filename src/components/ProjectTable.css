@@ -83,18 +83,19 @@
 }
 
 .ptable-link {
+  --link: var(--accent);
   display: inline-block;
   font-family: var(--mono);
   font-size: 11px;
   padding: 2px 8px;
   border-radius: 4px;
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--link) 35%, transparent);
+  color: var(--link);
   margin-right: 6px;
 }
 
 .ptable-link:hover {
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  background: color-mix(in srgb, var(--link) 14%, transparent);
   text-decoration: none;
 }
 

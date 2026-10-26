@@ -38,9 +38,9 @@ export default function About() {
           </div>
           <div className="about-body prose">
             <p>
-              I’m a software engineer in northern Indiana. I like small, fast, readable web apps,
-              and I spend most of my time building them for clients: local businesses, nonprofits
-              and town governments.
+              I’m a software engineer in New York City. I like small, fast, readable web apps, and
+              I spend most of my time building them for clients: small businesses, nonprofits and
+              town governments, many of them back in Indiana.
             </p>
             <p>
               Outside work I build tools around the things I actually do: tracking mahjong games,
