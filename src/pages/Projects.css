@@ -19,8 +19,12 @@
   margin-bottom: 16px;
 }
 
+.pfilters-search {
+  margin-left: auto;
+}
+
 .pfilters-search input {
-  width: min(100%, 280px);
+  width: min(100%, 260px);
   padding: 6px 10px;
   font-size: 0.9rem;
   color: var(--ink);

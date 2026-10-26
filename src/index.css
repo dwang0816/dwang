@@ -68,17 +68,21 @@ body {
   background: transparent;
 }
 
-/* The terminal grid from the TCG Forecast banner, faded out before the footer. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background-image:
-    repeating-linear-gradient(0deg, #16161c 0 1px, transparent 1px 44px),
-    repeating-linear-gradient(90deg, #16161c 0 1px, transparent 1px 44px);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 90%);
+/* Footer stays at the bottom of the viewport on short pages. */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root > main {
+  flex: 1;
+}
+
+/* Deep-space gradient under the star canvas: darkest at the top, a touch of
+   blue toward the horizon. */
+html {
+  background: radial-gradient(ellipse 120% 80% at 50% 110%, #10131f 0%, #0c0c10 60%) fixed;
 }
 
 h1,

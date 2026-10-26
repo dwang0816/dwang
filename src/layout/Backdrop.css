@@ -5,7 +5,4 @@
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  /* Strongest at the top where the hero sits in open space; eases off so long
-     lists lower down stay calm. */
-  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, rgba(0, 0, 0, 0.35) 100%);
 }

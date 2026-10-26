@@ -15,10 +15,26 @@ function matches(p: Project, q: string): boolean {
     .every((word) => hay.includes(word));
 }
 
+/** One selection: a client arrangement, a non-client group, or everything. */
+type Pick = 'all' | Via | Exclude<Category, 'client'>;
+
+const PICKS: { key: Pick; title: string; color: string }[] = [
+  { key: 'company', title: vias.company.title, color: vias.company.color },
+  { key: 'contract', title: vias.contract.title, color: vias.contract.color },
+  ...categoryOrder
+    .filter((c): c is Exclude<Category, 'client'> => c !== 'client')
+    .map((c) => ({ key: c, title: categories[c].title, color: categories[c].color })),
+];
+
+function keep(p: Project, pick: Pick): boolean {
+  if (pick === 'all') return true;
+  if (pick === 'company' || pick === 'contract') return p.via === pick;
+  return p.category === pick;
+}
+
 export default function Projects() {
   const [query, setQuery] = useState('');
-  const [only, setOnly] = useState<Category | null>(null);
-  const [via, setVia] = useState<Via | null>(null);
+  const [pick, setPick] = useState<Pick>('all');
   const q = useDeferredValue(query.trim());
 
   const groups = useMemo(
@@ -27,12 +43,12 @@ export default function Projects() {
         key,
         ...categories[key],
         all: byCategory(key).length,
-        items: byCategory(key).filter((p) => matches(p, q) && (!via || p.via === via)),
+        items: byCategory(key).filter((p) => matches(p, q) && keep(p, pick)),
       })),
-    [q, via],
+    [q, pick],
   );
-  const visible = groups.filter((g) => (only ? g.key === only : true));
-  const shown = visible.reduce((n, g) => n + g.items.length, 0);
+  const shown = groups.reduce((n, g) => n + g.items.length, 0);
+  const countFor = (k: Pick) => projects.filter((p) => keep(p, k) && matches(p, q)).length;
 
   return (
     <div className="page">
@@ -45,6 +61,27 @@ export default function Projects() {
       </div>
 
       <div className="pfilters panel">
+        <div className="pfilters-groups" role="group" aria-label="Show">
+          {PICKS.map((o) => (
+            <button
+              key={o.key}
+              type="button"
+              className={`pfilter pfilter-${o.key} ${pick === o.key ? 'is-on' : ''}`}
+              style={{ '--tag': o.color } as React.CSSProperties}
+              onClick={() => setPick(pick === o.key ? 'all' : o.key)}
+              aria-pressed={pick === o.key}
+            >
+              {o.title} <span className="mono">{countFor(o.key)}</span>
+            </button>
+          ))}
+          <button
+            type="button"
+            className={`pfilter ${pick === 'all' ? 'is-on' : ''}`}
+            onClick={() => setPick('all')}
+          >
+            All <span className="mono">{countFor('all')}</span>
+          </button>
+        </div>
         <label className="pfilters-search">
           <span className="visually-hidden">Filter projects</span>
           <input
@@ -55,52 +92,16 @@ export default function Projects() {
             autoComplete="off"
           />
         </label>
-        <div className="pfilters-groups" role="group" aria-label="Show one group">
-          <button
-            type="button"
-            className={`pfilter ${only === null ? 'is-on' : ''}`}
-            onClick={() => setOnly(null)}
-          >
-            All <span className="mono">{total}</span>
-          </button>
-          {groups.map((g) => (
-            <button
-              key={g.key}
-              type="button"
-              className={`pfilter pfilter-${g.key} ${only === g.key ? 'is-on' : ''}`}
-              style={{ '--tag': g.color } as React.CSSProperties}
-              onClick={() => setOnly(only === g.key ? null : g.key)}
-              aria-pressed={only === g.key}
-            >
-              {g.title} <span className="mono">{q || via ? `${g.items.length}/${g.all}` : g.all}</span>
-            </button>
-          ))}
-        </div>
-        <div className="pfilters-groups" role="group" aria-label="Client work by arrangement">
-          {(Object.keys(vias) as Via[]).map((v) => (
-            <button
-              key={v}
-              type="button"
-              className={`pfilter pfilter-${v} ${via === v ? 'is-on' : ''}`}
-              style={{ '--tag': vias[v].color } as React.CSSProperties}
-              onClick={() => setVia(via === v ? null : v)}
-              aria-pressed={via === v}
-            >
-              {vias[v].title}{' '}
-              <span className="mono">{projects.filter((p) => p.via === v).length}</span>
-            </button>
-          ))}
-        </div>
       </div>
 
       {shown === 0 ? (
         <p className="pempty">
-          Nothing matches{q ? ` “${q}”` : ''}{only ? ` in ${categories[only].title}` : ''}
-          {via ? ` for ${vias[via].title.toLowerCase()} work` : ''}. Try a shorter word, a technology
-          like Next.js, or a year.
+          Nothing matches{q ? ` “${q}”` : ''}
+          {pick !== 'all' ? ` in ${PICKS.find((o) => o.key === pick)?.title.toLowerCase()}` : ''}.
+          Try a shorter word, a technology like Next.js, or a year.
         </p>
       ) : (
-        visible.map((g) =>
+        groups.map((g) =>
           g.items.length === 0 ? null : (
             <section
               key={g.key}
@@ -123,3 +124,5 @@ export default function Projects() {
     </div>
   );
 }
+
+export type { Category };

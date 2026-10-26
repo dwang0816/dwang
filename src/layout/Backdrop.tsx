@@ -1,51 +1,194 @@
 import { useEffect, useRef } from 'react';
+import { CONSTELLATIONS, type Constellation } from './constellations';
 import './Backdrop.css';
 
 /**
- * A skill-tree constellation behind the page.
+ * A night sky behind the page.
  *
- * Round nodes drift slowly; any two within reach are joined by a link that
- * fades with distance, and bright pulses run along the links now and then.
- * Nodes near the pointer wake up: they brighten, grow a ring, lean toward the
- * cursor and link to it, so moving the mouse feels like scanning the tree.
+ * Three depths of stars, each pre-rendered once to its own offscreen canvas and
+ * slid across the viewport at its own speed, so a thousand stars cost two
+ * drawImage calls a frame. The brightest hundred or so are drawn live so they
+ * can twinkle; the very brightest carry diffraction spikes. A faint band of dust
+ * sits behind everything. Real constellations are placed in the mid layer with
+ * their stick figures and names, and wake up when the pointer comes near.
+ * Every six to twelve seconds a meteor crosses.
  *
- * One canvas at device resolution, paused while the tab is hidden, frozen on
- * a single frame under prefers-reduced-motion. Mounted after the page is idle
- * (see App), so it never competes with the content.
+ * The pointer also parallaxes the layers a few pixels, which is what makes the
+ * depth read. Touch leaves the sky still; reduced motion gets one frame.
  */
 
 type RGB = readonly [number, number, number];
 
-const TEAL: RGB = [46, 211, 195];
-const GOLD: RGB = [233, 196, 92];
-const GREEN: RGB = [95, 212, 138];
-const VIOLET: RGB = [180, 140, 242];
+/** Star colour by temperature, weighted toward white and blue-white. */
+const TEMPS: readonly { c: RGB; w: number }[] = [
+  { c: [255, 255, 255], w: 5 },
+  { c: [205, 220, 255], w: 4 },
+  { c: [170, 195, 255], w: 1 },
+  { c: [255, 244, 220], w: 3 },
+  { c: [255, 214, 170], w: 1.5 },
+  { c: [255, 180, 130], w: 0.6 },
+];
+const TEMP_TOTAL = TEMPS.reduce((n, t) => n + t.w, 0);
 
-interface Node {
+function tempColor(): RGB {
+  let r = Math.random() * TEMP_TOTAL;
+  for (const t of TEMPS) {
+    r -= t.w;
+    if (r <= 0) return t.c;
+  }
+  return TEMPS[0].c;
+}
+
+const rgba = (c: RGB, a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+interface Star {
+  x: number;
+  y: number;
+  r: number;
+  c: RGB;
+  a: number;
+  /** twinkle phase and speed; only used for live-drawn stars */
+  ph: number;
+  sp: number;
+  spikes: boolean;
+}
+
+interface Layer {
+  depth: number; // parallax factor and drift multiplier
+  canvas: HTMLCanvasElement;
+  live: Star[]; // bright stars drawn every frame
+  drift: number; // current x offset
+}
+
+interface Placed extends Constellation {
+  /** Star positions in sky pixels (mid layer space). */
+  pts: { x: number; y: number; r: number }[];
+  /** 0..1, how awake it is. */
+  lit: number;
+}
+
+interface Meteor {
   x: number;
   y: number;
   vx: number;
   vy: number;
-  r: number;
-  c: RGB;
-  /** 0..1, how lit by the cursor; eases so nodes glow in and out. */
-  lit: number;
+  life: number; // 0..1
+  len: number;
 }
 
-interface Pulse {
-  a: Node;
-  b: Node;
-  t: number;
-  speed: number;
-  c: RGB;
+const DRIFT = 0.018; // px/frame at depth 1
+const REACH = 160; // px: how near the pointer must come to wake a constellation
+
+function makeLayer(w: number, h: number, depth: number, perPx: number, liveShare: number): Layer {
+  const canvas = document.createElement('canvas');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.floor(w * dpr);
+  canvas.height = Math.floor(h * dpr);
+  const ctx = canvas.getContext('2d')!;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const count = Math.floor((w * h) / perPx);
+  const live: Star[] = [];
+  for (let i = 0; i < count; i++) {
+    // Magnitude distribution: most stars are faint, a few are bright.
+    const m = Math.pow(Math.random(), 2.6);
+    const star: Star = {
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: 0.35 + m * 1.9 * depth,
+      c: tempColor(),
+      a: 0.35 + m * 0.65,
+      ph: Math.random() * Math.PI * 2,
+      sp: 0.4 + Math.random() * 1.4,
+      spikes: m > 0.93 && depth >= 0.6,
+    };
+    if (m > 1 - liveShare) {
+      live.push(star);
+      continue;
+    }
+    ctx.fillStyle = rgba(star.c, star.a);
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+    ctx.fill();
+    if (star.r > 1.1) {
+      // soft halo for the mid-bright ones
+      ctx.fillStyle = rgba(star.c, star.a * 0.12);
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.r * 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  return { depth, canvas, live, drift: 0 };
 }
 
-const LINK = 170; // px: how close two nodes must be to connect
-const REACH = 220; // px: how far the cursor wakes nodes
-const DRIFT = 0.3; // px/frame: top cruising speed
+/** The dust band: many soft blobs along a diagonal, rendered small and scaled up. */
+function makeDust(w: number, h: number): HTMLCanvasElement {
+  const scale = 0.25;
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.floor(w * scale));
+  canvas.height = Math.max(1, Math.floor(h * scale));
+  const ctx = canvas.getContext('2d')!;
+  const cw = canvas.width;
+  const ch = canvas.height;
+  const tints: RGB[] = [
+    [120, 150, 220],
+    [46, 211, 195],
+    [180, 140, 242],
+    [233, 196, 92],
+    [200, 210, 255],
+  ];
+  // Band runs from upper-left to lower-right, slightly curved.
+  for (let i = 0; i < 220; i++) {
+    const t = Math.random();
+    const bx = cw * (t * 1.3 - 0.15);
+    const by = ch * (0.15 + t * 0.7 + Math.sin(t * Math.PI) * 0.12);
+    const spread = (0.09 + Math.random() * 0.1) * ch;
+    const x = bx + (Math.random() - 0.5) * spread * 2.2;
+    const y = by + (Math.random() - 0.5) * spread;
+    const r = (0.06 + Math.random() * 0.16) * ch;
+    const c = tints[Math.floor(Math.random() * tints.length)];
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, rgba(c, 0.05 + Math.random() * 0.05));
+    g.addColorStop(1, rgba(c, 0));
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+  return canvas;
+}
 
-const rgba = (c: RGB, a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
-const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(Math.random() * arr.length)];
+function placeConstellations(w: number, h: number): Placed[] {
+  // Each constellation gets a box in a loose grid so they never overlap.
+  const cols = w > 900 ? 3 : 2;
+  const rows = 3;
+  const cellW = w / cols;
+  const cellH = h / rows;
+  const cells: number[] = [];
+  for (let i = 0; i < cols * rows; i++) cells.push(i);
+  // shuffle
+  for (let i = cells.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cells[i], cells[j]] = [cells[j], cells[i]];
+  }
+  const out: Placed[] = [];
+  CONSTELLATIONS.slice(0, cells.length).forEach((con, i) => {
+    const cell = cells[i];
+    const cx = (cell % cols) * cellW;
+    const cy = Math.floor(cell / cols) * cellH;
+    const size = Math.min(cellW, cellH) * (0.42 + Math.random() * 0.14);
+    const ox = cx + (cellW - size * con.w) * (0.2 + Math.random() * 0.6);
+    const oy = cy + (cellH - size * con.h) * (0.2 + Math.random() * 0.6);
+    out.push({
+      ...con,
+      lit: 0,
+      pts: con.stars.map(([sx, sy, mag]) => ({
+        x: ox + sx * size,
+        y: oy + sy * size,
+        r: 1.2 + (3 - mag) * 0.55,
+      })),
+    });
+  });
+  return out;
+}
 
 export default function Backdrop() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -59,14 +202,18 @@ export default function Backdrop() {
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let w = 0;
     let h = 0;
-    let nodes: Node[] = [];
-    let pulses: Pulse[] = [];
+    let layers: Layer[] = [];
+    let dust: HTMLCanvasElement | null = null;
+    let cons: Placed[] = [];
+    let meteors: Meteor[] = [];
+    let nextMeteor = 4000;
     let raf = 0;
     let last = performance.now();
-    let sincePulse = 0;
-    // Pointer in page pixels; null until the pointer moves, and again after it leaves.
+    let t = 0; // seconds
     let px: number | null = null;
     let py: number | null = null;
+    let parX = 0; // eased parallax, -1..1
+    let parY = 0;
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -75,171 +222,203 @@ export default function Backdrop() {
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // Density scales with area so phones get a sparse tree, not a wall.
-      const count = Math.min(170, Math.max(48, Math.floor((w * h) / 9000)));
-      nodes = Array.from({ length: count }, () => {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 0.1 + Math.random() * 0.2;
-        return {
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          r: 1.4 + Math.random() * 1.8,
-          c: Math.random() < 0.72 ? TEAL : pick([GOLD, GREEN, VIOLET]),
-          lit: 0,
-        };
-      });
-      pulses = [];
+      layers = [
+        makeLayer(w, h, 0.35, 1500, 0.02), // far: many, tiny, almost still
+        makeLayer(w, h, 0.65, 3800, 0.08), // mid
+        makeLayer(w, h, 1.0, 11000, 0.22), // near: few, brighter, most twinkle
+      ];
+      dust = makeDust(w, h);
+      cons = placeConstellations(w, h);
+      meteors = [];
     };
 
-    const step = (dt: number) => {
-      for (const n of nodes) {
-        // Lean toward the cursor when close; otherwise settle back to cruising speed.
-        let target = 0;
-        if (px != null && py != null) {
-          const dx = px - n.x;
-          const dy = py - n.y;
-          const d = Math.hypot(dx, dy);
-          if (d < REACH) {
-            target = 1 - d / REACH;
-            const pull = 0.012 * target;
-            n.vx += (dx / (d || 1)) * pull * dt;
-            n.vy += (dy / (d || 1)) * pull * dt;
-          }
-        }
-        n.lit += (target - n.lit) * Math.min(1, 0.08 * dt);
-
-        const sp = Math.hypot(n.vx, n.vy);
-        if (sp > DRIFT) {
-          n.vx *= DRIFT / sp;
-          n.vy *= DRIFT / sp;
-        }
-        n.x += n.vx * dt;
-        n.y += n.vy * dt;
-        if (n.x < -10) n.x = w + 10;
-        else if (n.x > w + 10) n.x = -10;
-        if (n.y < -10) n.y = h + 10;
-        else if (n.y > h + 10) n.y = -10;
-      }
-      for (const p of pulses) p.t += p.speed * dt;
-      pulses = pulses.filter((p) => p.t < 1);
+    const drawLayerImage = (img: HTMLCanvasElement, ox: number, oy: number) => {
+      // Wrap horizontally: the layer is drawn twice when the drift reveals an edge.
+      const x = ((ox % w) + w) % w;
+      ctx.drawImage(img, x - w, oy, w, h);
+      ctx.drawImage(img, x, oy, w, h);
     };
 
-    const spawnPulse = () => {
-      const a = pick(nodes);
-      let best: Node | null = null;
-      let bestD = LINK;
-      for (const b of nodes) {
-        if (b === a) continue;
-        const d = Math.hypot(a.x - b.x, a.y - b.y);
-        if (d < bestD) {
-          bestD = d;
-          best = b;
-        }
-      }
-      if (best) pulses.push({ a, b: best, t: 0, speed: 0.012 + Math.random() * 0.012, c: a.c });
-    };
-
-    const dot = (x: number, y: number, r: number) => {
+    const spikes = (x: number, y: number, c: RGB, a: number, len: number) => {
+      const g1 = ctx.createLinearGradient(x - len, y, x + len, y);
+      g1.addColorStop(0, rgba(c, 0));
+      g1.addColorStop(0.5, rgba(c, a));
+      g1.addColorStop(1, rgba(c, 0));
+      ctx.strokeStyle = g1;
+      ctx.lineWidth = 0.8;
       ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.moveTo(x - len, y);
+      ctx.lineTo(x + len, y);
+      ctx.stroke();
+      const g2 = ctx.createLinearGradient(x, y - len, x, y + len);
+      g2.addColorStop(0, rgba(c, 0));
+      g2.addColorStop(0.5, rgba(c, a));
+      g2.addColorStop(1, rgba(c, 0));
+      ctx.strokeStyle = g2;
+      ctx.beginPath();
+      ctx.moveTo(x, y - len);
+      ctx.lineTo(x, y + len);
+      ctx.stroke();
     };
 
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
 
-      // Links between nodes. Lit nodes pull their links up with them.
-      ctx.lineWidth = 1;
-      for (let i = 0; i < nodes.length; i++) {
-        const a = nodes[i];
-        for (let j = i + 1; j < nodes.length; j++) {
-          const b = nodes[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          if (Math.abs(dx) > LINK || Math.abs(dy) > LINK) continue;
-          const d = Math.hypot(dx, dy);
-          if (d > LINK) continue;
-          const lit = Math.max(a.lit, b.lit);
-          const alpha = (1 - d / LINK) * (0.42 + lit * 0.5);
-          ctx.strokeStyle = rgba(a.c, alpha);
+      // Dust band, far back, with the far layer's parallax.
+      if (dust) {
+        ctx.globalAlpha = 0.65;
+        drawLayerImage(dust, layers[0].drift + parX * 4, parY * 3);
+        ctx.globalAlpha = 1;
+      }
+
+      for (const L of layers) {
+        const ox = L.drift + parX * 10 * L.depth;
+        const oy = parY * 7 * L.depth;
+        drawLayerImage(L.canvas, ox, oy);
+
+        // Live stars: twinkle, and spikes on the brightest.
+        const wrap = ((ox % w) + w) % w;
+        for (const s of L.live) {
+          const tw = 0.72 + 0.28 * Math.sin(t * s.sp * 2.2 + s.ph);
+          const a = s.a * tw;
+          let x = s.x + wrap;
+          if (x > w) x -= w;
+          const y = s.y + oy;
+          ctx.fillStyle = rgba(s.c, a * 0.14);
           ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
+          ctx.arc(x, y, s.r * 3.4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = rgba(s.c, a);
+          ctx.beginPath();
+          ctx.arc(x, y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+          if (s.spikes) spikes(x, y, s.c, a * 0.55, s.r * 9 * tw);
         }
       }
 
-      // Links from woken nodes to the cursor, then the cursor itself.
-      if (px != null && py != null) {
-        for (const n of nodes) {
-          if (n.lit < 0.03) continue;
-          ctx.strokeStyle = rgba(n.c, n.lit * 0.7);
+      // Constellations ride the mid layer.
+      const mid = layers[1];
+      const cox = ((mid.drift + parX * 10 * mid.depth) % w) + (mid.drift < 0 ? w : 0);
+      const coy = parY * 7 * mid.depth;
+      for (const con of cons) {
+        const shift = (x: number) => {
+          let v = x + (cox % w);
+          if (v > w) v -= w;
+          return v;
+        };
+        const lineA = 0.1 + con.lit * 0.5;
+        ctx.strokeStyle = `rgba(190, 215, 255, ${lineA})`;
+        ctx.lineWidth = 0.8;
+        for (const [i, j] of con.lines) {
+          const a = con.pts[i];
+          const b = con.pts[j];
           ctx.beginPath();
-          ctx.moveTo(n.x, n.y);
-          ctx.lineTo(px, py);
+          ctx.moveTo(shift(a.x), a.y + coy);
+          ctx.lineTo(shift(b.x), b.y + coy);
           ctx.stroke();
         }
-        ctx.strokeStyle = rgba(TEAL, 0.5);
-        ctx.beginPath();
-        ctx.arc(px, py, 7, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.fillStyle = rgba(TEAL, 0.9);
-        dot(px, py, 1.8);
-      }
-
-      // Nodes: a soft halo, a thin ring when lit, and the core.
-      for (const n of nodes) {
-        const r = n.r * (1 + n.lit * 0.9);
-        ctx.fillStyle = rgba(n.c, 0.1 + n.lit * 0.18);
-        dot(n.x, n.y, r * 3.2);
-        if (n.lit > 0.05) {
-          ctx.strokeStyle = rgba(n.c, n.lit * 0.9);
-          ctx.lineWidth = 1;
+        for (const p of con.pts) {
+          const x = shift(p.x);
+          const y = p.y + coy;
+          const a = 0.75 + con.lit * 0.25;
+          ctx.fillStyle = `rgba(225, 235, 255, ${a * 0.16})`;
           ctx.beginPath();
-          ctx.arc(n.x, n.y, r + 3.5 + n.lit * 2, 0, Math.PI * 2);
-          ctx.stroke();
+          ctx.arc(x, y, p.r * 3.2 + con.lit * 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = `rgba(240, 245, 255, ${a})`;
+          ctx.beginPath();
+          ctx.arc(x, y, p.r + con.lit * 0.6, 0, Math.PI * 2);
+          ctx.fill();
         }
-        ctx.fillStyle = rgba(n.c, 0.95);
-        dot(n.x, n.y, r);
+        if (con.lit > 0.02) {
+          const lx = shift(con.pts[con.label[0]].x) + con.label[1];
+          const ly = con.pts[con.label[0]].y + coy + con.label[2];
+          ctx.font = '500 10px "IBM Plex Mono", ui-monospace, monospace';
+          ctx.fillStyle = `rgba(200, 220, 255, ${con.lit * 0.85})`;
+          ctx.letterSpacing = '2px';
+          ctx.fillText(con.name.toUpperCase(), lx, ly);
+          ctx.letterSpacing = '0px';
+        }
       }
 
-      // Pulses: a bright head with a short fading tail along the link.
-      for (const p of pulses) {
-        const x = p.a.x + (p.b.x - p.a.x) * p.t;
-        const y = p.a.y + (p.b.y - p.a.y) * p.t;
-        const tail = Math.max(0, p.t - 0.18);
-        const tx = p.a.x + (p.b.x - p.a.x) * tail;
-        const ty = p.a.y + (p.b.y - p.a.y) * tail;
-        const grad = ctx.createLinearGradient(tx, ty, x, y);
-        grad.addColorStop(0, rgba(p.c, 0));
-        grad.addColorStop(1, rgba(p.c, 0.9));
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.5;
+      // Meteors.
+      for (const m of meteors) {
+        const fade = Math.sin(m.life * Math.PI);
+        const tx = m.x - (m.vx / Math.hypot(m.vx, m.vy)) * m.len * fade;
+        const ty = m.y - (m.vy / Math.hypot(m.vx, m.vy)) * m.len * fade;
+        const g = ctx.createLinearGradient(tx, ty, m.x, m.y);
+        g.addColorStop(0, 'rgba(255,255,255,0)');
+        g.addColorStop(1, `rgba(255,255,255,${0.9 * fade})`);
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(tx, ty);
-        ctx.lineTo(x, y);
+        ctx.lineTo(m.x, m.y);
         ctx.stroke();
-        ctx.fillStyle = rgba(p.c, 1);
-        ctx.shadowColor = rgba(p.c, 0.9);
-        ctx.shadowBlur = 10;
-        dot(x, y, 2);
-        ctx.shadowBlur = 0;
+        ctx.fillStyle = `rgba(255,255,255,${fade})`;
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, 1.4, 0, Math.PI * 2);
+        ctx.fill();
       }
     };
 
-    const frame = (now: number) => {
-      // dt in frames at 60fps, so drift speed is the same on 120Hz screens.
-      const dt = Math.min(3, (now - last) / 16.667);
-      sincePulse += now - last;
-      last = now;
-      if (sincePulse > 260 && pulses.length < 10) {
-        sincePulse = 0;
-        spawnPulse();
+    const step = (dt: number, ms: number) => {
+      t += ms / 1000;
+      for (const L of layers) L.drift -= DRIFT * L.depth * dt;
+
+      // Ease parallax toward the pointer.
+      const tx = px == null ? 0 : (px / w) * 2 - 1;
+      const ty = py == null ? 0 : (py / h) * 2 - 1;
+      parX += (tx - parX) * Math.min(1, 0.04 * dt);
+      parY += (ty - parY) * Math.min(1, 0.04 * dt);
+
+      // Wake constellations near the pointer.
+      const mid = layers[1];
+      const cox = mid.drift + parX * 10 * mid.depth;
+      for (const con of cons) {
+        let target = 0;
+        if (px != null && py != null) {
+          let best = Infinity;
+          for (const p of con.pts) {
+            let x = p.x + (((cox % w) + w) % w);
+            if (x > w) x -= w;
+            const d = Math.hypot(x - px, p.y - py);
+            if (d < best) best = d;
+          }
+          if (best < REACH) target = 1 - best / REACH;
+        }
+        con.lit += (target - con.lit) * Math.min(1, 0.07 * dt);
       }
-      step(dt);
+
+      // Meteors.
+      nextMeteor -= ms;
+      if (nextMeteor <= 0) {
+        nextMeteor = 6000 + Math.random() * 6000;
+        const fromLeft = Math.random() < 0.5;
+        const speed = 9 + Math.random() * 6;
+        const ang = (fromLeft ? 0.35 : Math.PI - 0.35) + (Math.random() - 0.5) * 0.4;
+        meteors.push({
+          x: fromLeft ? Math.random() * w * 0.4 : w * 0.6 + Math.random() * w * 0.4,
+          y: Math.random() * h * 0.5,
+          vx: Math.cos(ang) * speed,
+          vy: Math.sin(ang) * speed,
+          life: 0,
+          len: 90 + Math.random() * 110,
+        });
+      }
+      for (const m of meteors) {
+        m.x += m.vx * dt;
+        m.y += m.vy * dt;
+        m.life += 0.035 * dt;
+      }
+      meteors = meteors.filter((m) => m.life < 1);
+    };
+
+    const frame = (now: number) => {
+      const ms = Math.min(50, now - last);
+      const dt = ms / 16.667;
+      last = now;
+      step(dt, ms);
       draw();
       raf = requestAnimationFrame(frame);
     };
@@ -255,7 +434,7 @@ export default function Backdrop() {
     };
     const onVisibility = () => (document.hidden ? stop() : start());
     const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return; // touch has no hover; leave the tree calm
+      if (e.pointerType !== 'mouse') return;
       px = e.clientX;
       py = e.clientY;
     };
@@ -265,12 +444,8 @@ export default function Backdrop() {
     };
 
     resize();
-    if (still) {
-      for (let i = 0; i < 4; i++) spawnPulse();
-      draw();
-    } else {
-      start();
-    }
+    if (still) draw();
+    else start();
     window.addEventListener('resize', resize);
     document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('pointermove', onMove, { passive: true });
