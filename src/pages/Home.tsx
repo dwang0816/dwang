@@ -124,8 +124,10 @@ export default function Home() {
           </div>
           <div className="home-guide-body">
             <p>
-              A canvas, one colour, one brush size, Clear and Save. Built alongside an essay on
-              creating without a reason. The simplicity is the point.
+              <em>The Beginner’s Guide</em> is a game about a developer who builds strange little
+              rooms for nobody. I wrote about why that is the way out of creative block: build
+              without a point until the act itself becomes the meaning. The canvas is that idea
+              with a brush. Nothing to finish, nobody to show.
             </p>
             <div className="home-feature-foot">
               <span className="home-feature-links">

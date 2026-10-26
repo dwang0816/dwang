@@ -55,11 +55,17 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+}
+
+/* The page colour lives on html only. A body background would paint over the
+   negative z-index backdrop and grid, hiding both. */
+html {
   background: var(--graphite);
 }
 
 body {
   min-width: 320px;
+  background: transparent;
 }
 
 /* The terminal grid from the TCG Forecast banner, faded out before the footer. */
@@ -170,7 +176,8 @@ input {
 
 /* A bordered panel with a titled header. */
 .panel {
-  background: var(--panel);
+  /* Slightly translucent so the drifting backdrop reads through the panels. */
+  background: color-mix(in srgb, var(--panel) 84%, transparent);
   border: 1px solid var(--edge);
   border-radius: var(--radius);
   overflow: hidden;

@@ -23,9 +23,9 @@ interface Blob {
 
 function makeBlobs(): Blob[] {
   return Array.from({ length: COUNT }, (_, i) => ({
-    left: utils.random(-10, 100),
-    top: utils.random(-10, 100),
-    size: utils.random(180, 420),
+    left: utils.random(-5, 105),
+    top: utils.random(-5, 105),
+    size: utils.random(320, 640),
     color: COLORS[i % COLORS.length],
   }));
 }
@@ -41,12 +41,12 @@ export default function Backdrop() {
 
     const anims = Array.from(root.children).map((el, i) =>
       animate(el, {
-        x: () => utils.random(-90, 90),
-        y: () => utils.random(-70, 70),
-        scale: () => utils.random(0.85, 1.25, 2),
-        opacity: () => utils.random(0.5, 1, 2),
-        duration: () => utils.random(16000, 30000),
-        delay: i * 120,
+        x: () => utils.random(-260, 260),
+        y: () => utils.random(-180, 180),
+        scale: () => utils.random(0.7, 1.4, 2),
+        opacity: () => utils.random(0.35, 1, 2),
+        duration: () => utils.random(7000, 14000),
+        delay: i * 90,
         ease: 'inOutSine',
         loop: true,
         alternate: true,
