@@ -585,7 +585,7 @@ export const projects: Project[] = [
   },
   {
     name: "The Beginner's Guide",
-    blurb: 'A drawing canvas inspired by the game of the same name. Sketch without a reason; there is an essay that goes with it.',
+    blurb: 'A drawing canvas inspired by the game of the same name. Sketch without a reason; there is a thought journal that goes with it.',
     stack: ['Vite', 'React'],
     category: 'play',
     year: 2025,

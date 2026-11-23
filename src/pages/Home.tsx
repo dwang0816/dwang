@@ -119,7 +119,7 @@ export default function Home() {
             <h2>The Beginner’s Guide</h2>
             <span className="tag tag-play">Play</span>
             <span className="tag" style={{ '--tag': 'var(--c-template)' } as React.CSSProperties}>
-              Essay
+              Thought journal
             </span>
           </div>
           <div className="home-guide-body">
@@ -138,7 +138,7 @@ export default function Home() {
                   className="ptable-link"
                   style={{ '--link': 'var(--c-template)' } as React.CSSProperties}
                 >
-                  Read the essay
+                  Read
                 </a>
                 <a
                   href="https://the-beginners-guide.netlify.app"
