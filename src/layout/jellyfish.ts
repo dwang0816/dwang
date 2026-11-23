@@ -352,11 +352,18 @@ export function moonJelly(grid: Grid, t: number, o: JellyOpts) {
   const cw = Math.cos(w);
   const sw = Math.sin(w);
 
-  // -- bell: a wide, shallow, glassy saucer with a scalloped rim
+  // -- bell: a wide, shallow, glassy saucer with a scalloped rim.
+  // Texture, from big to small: radial canals that branch 16 -> 32 -> 64
+  // toward the rim and meet a ring canal near the edge; a bright ripple that
+  // runs out from the top after each contraction; fine concentric growth
+  // lines; a stable mottle across the glass; and scattered glowing specks.
   const nu = clampN((scale / CH) * 3, 5, 60);
   const nph = clampN(((TAU * scale * A) / CW) * 1.4, 16, 300);
   const R = ring(nph);
   const canal = Math.max(1, Math.round(nph / 16));
+  const canal2 = Math.max(1, Math.round(canal / 2));
+  const canal4 = Math.max(1, Math.round(canal / 4));
+  const beatPh = (((t / period) % 1) + 1) % 1;
   for (let iu = 0; iu < nu; iu++) {
     const u = 0.02 + (0.98 * iu) / (nu - 1);
     const su = Math.sin((u * Math.PI) / 2);
@@ -365,6 +372,10 @@ export function moonJelly(grid: Grid, t: number, o: JellyOpts) {
     const ny0 = py / (B * B);
     const edge = u > 0.93 ? 0.4 : 0;
     const hue = hueAt(u * 0.35);
+    const rd = (u - beatPh * 1.2) / 0.07;
+    const ripple = 0.32 * Math.exp(-rd * rd) * (1 - beatPh);
+    const ringCanal = Math.abs(u - 0.88) < 0.03 ? 0.28 : 0;
+    const lines = 0.07 * Math.sin(u * 46 - w * 0.5);
     for (let k = 0; k < nph; k++) {
       const cp = R.c[k];
       const sp = R.s[k];
@@ -375,17 +386,26 @@ export function moonJelly(grid: Grid, t: number, o: JellyOpts) {
       const nz = pz / (A * A);
       const nl = Math.sqrt(nx * nx + ny0 * ny0 + nz * nz) || 1;
       const { diff, rim } = shade(cam, nx / nl, ny0 / nl, nz / nl);
-      // mostly see-through: faint letters, a bright rim, and radial canals
-      const lum = clamp01(0.1 + 0.28 * diff + 0.75 * rim + edge + (k % canal === 0 ? 0.25 : 0));
+      const canals = k % canal === 0 ? 0.26 : u > 0.5 && k % canal2 === 0 ? 0.18 : u > 0.72 && k % canal4 === 0 ? 0.11 : 0;
+      const n = hash(iu * 977.1 + k * 3.7); // stable per point
+      const mottle = 0.8 + 0.4 * (n - 0.5) + 0.08 * Math.sin(t * 1.8 + n * TAU);
+      const lum = clamp01((0.1 + 0.28 * diff + 0.75 * rim) * mottle + edge + canals + ringCanal + ripple + lines);
       project(cam, px, py, pz);
-      emit(out[2] + back, ramp(lum),
-        hue + 0.12 * py + 0.06 * (cp * cw - sp * sw), 0.55 - 0.25 * rim, (0.22 + 0.78 * lum) * dim);
+      const hh = hue + 0.12 * py + 0.06 * (cp * cw - sp * sw);
+      if (n > 0.991 && u > 0.15) {
+        // a glowing speck, twinkling on its own clock
+        const tw = 0.6 + 0.4 * Math.sin(t * 2.6 + n * 400);
+        emit(out[2] + back - 0.01, tw > 0.75 ? G.star : G.plus, hh + 0.5, 0.3, tw * dim);
+      } else {
+        emit(out[2] + back, ramp(lum), hh, 0.55 - 0.25 * rim, (0.22 + 0.78 * lum) * dim);
+      }
     }
   }
 
-  // -- the four rings (gonads): bright horseshoes just under the bell's top
+  // -- the four rings (gonads): frilly horseshoes just under the bell's top,
+  // with a dotted fill and a shimmer running round them
   const hueRing = hueAt(0.15) + 0.5;
-  const nRing = clampN(((TAU * 0.25 * scale) / CW) * 2, 10, 90);
+  const nRing = clampN(((TAU * 0.25 * scale) / CW) * 2.4, 12, 110);
   for (let j = 0; j < 4; j++) {
     const ang = (j * TAU) / 4 + Math.PI / 4;
     const rc = 0.5 * A;
@@ -395,11 +415,17 @@ export function moonJelly(grid: Grid, t: number, o: JellyOpts) {
     const glow = 0.75 + 0.25 * pulse(t - 0.2 - j * 0.1, period);
     for (let i = 0; i < nRing; i++) {
       const th = ang + 0.5 + (i / (nRing - 1)) * (TAU - 1); // gap faces the rim
+      const frill = 1 + 0.16 * Math.sin(9 * th + w * 1.5 + j);
+      const shimmer = 0.8 + 0.2 * Math.sin(6 * th - 2 * w);
       // They sit inside the glassy bell but glow through it, so they are
       // drawn in front of its surface.
-      for (const [rr, g] of [[0.16, G.o], [0.24, G.O]] as const) {
+      for (const [rr, g, s, v] of [
+        [0.1, G.dot, 0.4, 0.55],
+        [0.165, G.o, 0.65, 0.9],
+        [0.24 * frill, G.O, 0.7, 1],
+      ] as const) {
         project(cam, gx + rr * Math.cos(th), gy, gz + rr * Math.sin(th));
-        emit(out[2] + back - 1, g, hueRing, 0.65, glow * dim);
+        emit(out[2] + back - 1, g, hueRing + (rr - 0.16) * 0.6, s, glow * shimmer * v * dim);
       }
     }
   }
@@ -413,7 +439,8 @@ export function moonJelly(grid: Grid, t: number, o: JellyOpts) {
     const phi = (k * TAU) / o.nTent;
     const cphi = Math.cos(phi);
     const sphi = Math.sin(phi);
-    const len = 0.32 + 0.14 * hash(k + 0.5);
+    // alternate long and short, so the fringe reads as a layered curtain
+    const len = (k % 2 ? 0.26 : 0.4) + 0.12 * hash(k + 0.5);
     for (let i = 0; i < nf; i++) {
       const s = i / (nf - 1);
       const lag = pulse(t - 0.25 - s * 0.6, period);
@@ -426,10 +453,12 @@ export function moonJelly(grid: Grid, t: number, o: JellyOpts) {
     }
     for (let i = 0; i < nf; i++) {
       const s = i / (nf - 1);
-      const g = s > 0.8 ? G.tick : strokeAt(sx, sy, i, nf);
+      const tip = i === nf - 1;
+      const g = tip ? (k % 3 ? G.dot : G.o) : s > 0.8 ? G.tick : strokeAt(sx, sy, i, nf);
+      const beads = 0.8 + 0.2 * Math.sin(14 * s - w * 2 + k);
       out[0] = sx[i];
       out[1] = sy[i];
-      emit(sz[i] + back, g, hueAt(0.4 + 0.6 * s) + 0.12, 0.5, (0.75 - 0.4 * s) * dim);
+      emit(sz[i] + back, g, hueAt(0.4 + 0.6 * s) + 0.12, tip ? 0.3 : 0.5, (tip ? 0.85 : (0.75 - 0.4 * s) * beads) * dim);
     }
   }
 }
