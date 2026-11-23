@@ -13,7 +13,7 @@
 
   /* See-through surfaces: enough to read on, thin enough that the jellyfish
      behind the page stays visible. One knob for the whole site. */
-  --see-through: 55%;
+  --see-through: 68%;
   --surface: color-mix(in srgb, var(--panel) var(--see-through), transparent);
   --surface-hi: color-mix(in srgb, var(--panel-hi) var(--see-through), transparent);
   --surface-bar: color-mix(in srgb, var(--graphite) var(--see-through), transparent);
