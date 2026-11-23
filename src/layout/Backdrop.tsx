@@ -1,16 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { CH, CW, GLYPHS, Grid, TAU, rng } from './ascii';
-import { jelly, pulse } from './jellyfish';
+import { jelly, moonJelly, pulse } from './jellyfish';
 import { drawSeabed, makeSeabed, type Seabed } from './seabed';
 import './Backdrop.css';
 
 /**
  * A deep-sea scene in ASCII behind the page, after jellyfish.py.
  *
- * One big jellyfish in the middle (it gathers itself out of a swirl of motes
- * when the site opens, leans a little, and changes colour on every beat),
- * smaller and baby jellies rising slowly through the water, and a seabed of
- * corals, vents and fish along the bottom. See jellyfish.ts and seabed.ts.
+ * Big jellyfish that gather themselves out of a swirl of motes when the site
+ * opens, lean a little, and send a new colour down their bodies on every
+ * beat: on wide screens one in each side margin (the classic one and a moon
+ * jelly), otherwise the classic one alone in the middle. Smaller and baby
+ * jellies rise slowly through the water, and a seabed of corals, vents and
+ * fish runs along the bottom. See jellyfish.ts and seabed.ts.
  *
  * Drawing: every part plots into one letter grid (ascii.ts). The grid is drawn
  * by stamping white glyphs from a pre-rendered atlas, colouring them in one
@@ -20,6 +22,9 @@ import './Backdrop.css';
  */
 
 const BEAT = 3.2; // seconds per pulse of the big jellyfish
+const MOON_BEAT = 3.9; // the moon jelly pulses a little slower
+const HUE_STEP = 0.38; // hue change per flap: about a third of the wheel
+const CONTENT = 1180; // the page's content width (--wrap)
 const TURN = 48; // seconds per full turn
 const SPAWN = 2.6; // seconds for the big one to gather itself
 const FPS = 30;
@@ -159,23 +164,47 @@ export default function Backdrop() {
         });
       });
 
-      // The big one, centred, thrusting up a little on each beat.
-      const cy = Math.max(h * 0.09, 30) + scale * 1.1 - h * 0.035 * pulse(t - 0.4, BEAT) + 10 * Math.sin((TAU * t) / 23);
+      // The big ones. Each flap moves the hue a long way round the wheel
+      // (HUE_STEP), so every beat sends a very different colour down the body.
+      // Wide screens: one in each side margin, clear of the content.
+      // Otherwise: the classic one alone, centred behind the content.
+      const gutter = (w - CONTENT) / 2;
+      const sides = gutter >= 250;
+      const big = sides ? Math.min(gutter * 0.4, h * 0.17) : scale;
+      const thrust = h * 0.035 * pulse(t - 0.4, BEAT);
       jelly(grid, t, {
-        cx: w * 0.5 + 14 * Math.sin((TAU * t) / 31),
-        cy,
-        scale,
+        cx: (sides ? gutter / 2 : w * 0.5) + 12 * Math.sin((TAU * t) / 31),
+        cy: Math.max(h * 0.09, 30) + big * 1.1 - thrust + 10 * Math.sin((TAU * t) / 23),
+        scale: big,
         hue,
         dim: 0.85,
         back: 0,
         period: BEAT,
         rot,
         lean: 0.1 + 0.07 * Math.sin((TAU * t) / 12),
-        hueStep: 0.13,
+        hueStep: HUE_STEP,
         nTent: 12,
         sparks: true,
         spawn,
       });
+      if (sides) {
+        const moon = Math.min(gutter * 0.34, h * 0.16);
+        moonJelly(grid, t, {
+          cx: w - gutter / 2 + 12 * Math.sin((TAU * t) / 27),
+          cy: h * 0.3 + h * 0.06 * Math.sin((TAU * t) / 37) - h * 0.03 * pulse(t - 0.3, MOON_BEAT),
+          scale: moon,
+          hue: hue + 0.35,
+          dim: 0.85,
+          back: 0,
+          period: MOON_BEAT,
+          rot: -rot * 0.8,
+          lean: -0.08 + 0.06 * Math.sin((TAU * t) / 14),
+          hueStep: HUE_STEP,
+          nTent: 56,
+          sparks: false,
+          spawn: clamp01((t - 0.3) / SPAWN),
+        });
+      }
     };
 
     const draw = () => {
