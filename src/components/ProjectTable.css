@@ -14,7 +14,7 @@
   color: var(--ink-faint);
   padding: 8px 16px;
   border-bottom: 1px solid var(--edge);
-  background: var(--panel-hi);
+  background: var(--surface-hi);
 }
 
 .ptable td {
@@ -28,7 +28,7 @@
 }
 
 .ptable tbody tr:hover td {
-  background: var(--panel-hi);
+  background: var(--surface-hi);
 }
 
 .ptable-main {

@@ -1,7 +1,7 @@
 .footer {
   border-top: 1px solid var(--edge);
   margin-top: 72px;
-  background: var(--graphite);
+  background: var(--surface-bar);
 }
 
 .footer-inner {

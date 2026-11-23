@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background: color-mix(in srgb, var(--graphite) 88%, transparent);
+  background: var(--surface-bar);
   backdrop-filter: saturate(140%) blur(8px);
   border-bottom: 1px solid var(--edge);
 }

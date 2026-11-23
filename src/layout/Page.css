@@ -27,6 +27,15 @@
   margin-left: auto;
 }
 
+/* Page heads sit straight on the backdrop, not on a panel: a soft dark halo
+   keeps them readable when the jellyfish drifts behind. */
+.page-head,
+.prose {
+  text-shadow:
+    0 0 3px var(--graphite),
+    0 0 10px var(--graphite);
+}
+
 .prose {
   max-width: 66ch;
   color: var(--ink-dim);

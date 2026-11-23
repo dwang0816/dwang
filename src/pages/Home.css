@@ -203,7 +203,7 @@
 }
 
 .home-writing li:hover {
-  background: var(--panel-hi);
+  background: var(--surface-hi);
 }
 
 .home-writing a {

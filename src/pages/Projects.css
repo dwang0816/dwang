@@ -28,7 +28,7 @@
   padding: 6px 10px;
   font-size: 0.9rem;
   color: var(--ink);
-  background: var(--graphite);
+  background: var(--surface-bar);
   border: 1px solid var(--edge-hi);
   border-radius: 6px;
 }

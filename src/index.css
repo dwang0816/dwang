@@ -11,6 +11,13 @@
   --edge: #26262e;
   --edge-hi: #34343e;
 
+  /* See-through surfaces: enough to read on, thin enough that the jellyfish
+     behind the page stays visible. One knob for the whole site. */
+  --see-through: 55%;
+  --surface: color-mix(in srgb, var(--panel) var(--see-through), transparent);
+  --surface-hi: color-mix(in srgb, var(--panel-hi) var(--see-through), transparent);
+  --surface-bar: color-mix(in srgb, var(--graphite) var(--see-through), transparent);
+
   --ink: #f4f4f6;
   --ink-dim: #b4b6c2;
   --ink-faint: #80838f;
@@ -180,8 +187,8 @@ input {
 
 /* A bordered panel with a titled header. */
 .panel {
-  /* Slightly translucent so the drifting backdrop reads through the panels. */
-  background: color-mix(in srgb, var(--panel) 90%, transparent);
+  /* Translucent so the jellyfish reads through the panels. */
+  background: var(--surface);
   border: 1px solid var(--edge);
   border-radius: var(--radius);
   overflow: hidden;

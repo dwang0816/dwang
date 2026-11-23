@@ -17,7 +17,7 @@
 }
 
 .wlist li:hover {
-  background: var(--panel-hi);
+  background: var(--surface-hi);
 }
 
 .wlist-title {
