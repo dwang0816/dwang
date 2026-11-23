@@ -244,25 +244,51 @@ export default function Backdrop() {
       ctx.globalCompositeOperation = 'source-over';
     };
 
-    const frame = (now: number) => {
-      raf = requestAnimationFrame(frame);
-      t += Math.min(1000, now - last) / 1000; // cap a long stall, not slow frames
+    // The loop. In-app browsers on iOS (Messenger, Instagram: WKWebView)
+    // report page visibility unreliably and can leave requestAnimationFrame
+    // stalled, which froze the scene on one frame. So the loop never stops
+    // itself on visibility events (browsers already pause rAF in hidden tabs),
+    // a watchdog restarts it when frames stop arriving, and if rAF still will
+    // not fire, a plain timer drives the frames until it comes back.
+    let fallback = 0; // setInterval id while rAF is not firing
+    let lastTick = 0; // when the scene last advanced, by any driver
+    let kicked = false; // the watchdog has already restarted rAF once
+
+    const tick = (now: number) => {
+      t += Math.min(1000, Math.max(0, now - last)) / 1000; // cap a long stall
       last = now;
+      lastTick = now;
       if (now - lastDraw < 1000 / FPS - 2) return;
       lastDraw = now;
       draw();
     };
-
+    const frame = (now: number) => {
+      raf = requestAnimationFrame(frame);
+      kicked = false;
+      if (fallback) {
+        clearInterval(fallback); // rAF is back
+        fallback = 0;
+      }
+      tick(now);
+    };
     const start = () => {
-      if (still || raf) return;
-      last = performance.now();
+      if (still) return;
+      cancelAnimationFrame(raf);
+      last = lastTick = performance.now();
       raf = requestAnimationFrame(frame);
     };
-    const stop = () => {
-      cancelAnimationFrame(raf);
-      raf = 0;
+    /** Restart the loop if it has stalled. */
+    const revive = () => {
+      if (still || performance.now() - lastTick < 1500) return;
+      if (!kicked || document.visibilityState === 'hidden') {
+        kicked = true;
+        start();
+      } else if (!fallback) {
+        // rAF was restarted and still did not fire: drive frames by timer
+        fallback = window.setInterval(() => tick(performance.now()), 1000 / FPS);
+      }
     };
-    const onVisibility = () => (document.hidden ? stop() : start());
+    const watchdog = still ? 0 : window.setInterval(revive, 1000);
     const onResize = () => {
       resize();
       if (still) draw();
@@ -270,18 +296,24 @@ export default function Backdrop() {
 
     resize();
     if (still) draw();
-    else if (!document.hidden) start();
+    else start();
     // The atlas was drawn with whatever font was ready; redraw once Plex arrives.
     document.fonts?.ready.then(() => {
       buildAtlas();
       if (still) draw();
     });
+    // Any sign of life from the page is a chance to restart a stalled loop.
+    const wake = ['pageshow', 'focus', 'pointerdown', 'touchstart', 'scroll'] as const;
     window.addEventListener('resize', onResize);
-    document.addEventListener('visibilitychange', onVisibility);
+    for (const e of wake) window.addEventListener(e, revive, { passive: true });
+    document.addEventListener('visibilitychange', revive);
     return () => {
-      stop();
+      cancelAnimationFrame(raf);
+      clearInterval(fallback);
+      clearInterval(watchdog);
       window.removeEventListener('resize', onResize);
-      document.removeEventListener('visibilitychange', onVisibility);
+      for (const e of wake) window.removeEventListener(e, revive);
+      document.removeEventListener('visibilitychange', revive);
     };
   }, []);
 
